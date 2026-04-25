@@ -23,6 +23,16 @@ Rotas principais:
   - `GET /api/client/employees/email/{email}`
   - `POST /api/client/employees`
 
+Fluxo de branches:
+  - `main`: branch protegida para codigo pronto para producao
+  - `develop`: branch protegida para consolidacao das entregas
+  - `feat/*`: branches de desenvolvimento abertas a partir de `develop`
+
+Fluxo recomendado:
+  - Crie novas entregas a partir de `develop`
+  - Abra PR de `feat/*` para `develop`
+  - Promova `develop` para `main` apenas apos validacao
+
 Setup local:
   - Instale o .NET 8 SDK
   - Configure um cluster MongoDB e defina a env var `MONGO_URI` ou atualize `appsettings.json`
