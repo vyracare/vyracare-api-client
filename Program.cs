@@ -1,13 +1,13 @@
 using Amazon.Lambda.AspNetCoreServer;
 using Amazon.Lambda.AspNetCoreServer.Hosting;
 using MongoDB.Driver;
-using [assembly-generic].Services;
+using Vyracare.Api.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 var mongoUri = configuration["Mongo:ConnectionString"] ?? Environment.GetEnvironmentVariable("MONGO_URI") ?? "mongodb://localhost:27017";
-var mongoDatabase = configuration["Mongo:Database"] ?? "[database-generic]";
+var mongoDatabase = configuration["Mongo:Database"] ?? "vyracare";
 
 builder.Services.AddSingleton<IMongoClient>(_ => new MongoClient(mongoUri));
 builder.Services.AddScoped(sp => sp.GetRequiredService<IMongoClient>().GetDatabase(mongoDatabase));
@@ -17,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 
-builder.Services.AddScoped<[resource-generic]Service>();
+builder.Services.AddScoped<ClientService>();
 
 var app = builder.Build();
 
@@ -29,6 +29,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
-app.MapGet("/health", () => Results.Ok(new { status = "ok", api = "[repo-generic]" }));
+app.MapGet("/health", () => Results.Ok(new { status = "ok", api = "vyracare-api-client" }));
 
 app.Run();

@@ -1,14 +1,14 @@
-[repo-generic] (.NET 8) - MongoDB + AWS Lambda
+vyracare-api-client (.NET 8) - MongoDB + AWS Lambda
 -------------------------------------
 
 Descricao:
-  - [description-generic]
+  - Api responsavel pelas interações com a camada de cliente
 
 Recursos iniciais:
   - Projeto .NET 8 preparado para AWS Lambda
-  - MongoDB configurado com database `[database-generic]`
-  - Controller inicial para a collection `[table-generic]`
-  - Rotas base publicadas em `/api/[table-route-generic]`
+  - MongoDB configurado com database `vyracare`
+  - Controller inicial para a collection `client`
+  - Rotas base publicadas em `/api/client`
 
 Setup local:
   - Install .NET 8 SDK

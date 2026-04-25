@@ -11,12 +11,12 @@ jobs:
     with:
       branch-name: ${{ github.ref_name }}
       backend-repo: ${{ github.repository }}
-      project-path: "[project-file-generic]"
+      project-path: "Vyracare.Api.Client.csproj"
       output-dir: backend-publish
-      api-gateway-name: "[repo-generic]"
-      lambda-function-name: "[lambda-name-generic]"
-      lambda-handler: "[assembly-generic]"
-      route-base-path: "api/[table-route-generic]"
+      api-gateway-name: "vyracare-api-client"
+      lambda-function-name: "vyracare-api-client-dev"
+      lambda-handler: "Vyracare.Api.Client"
+      route-base-path: "api/client"
     secrets: inherit
 
   open-pr-main:

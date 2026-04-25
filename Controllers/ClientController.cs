@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-using [assembly-generic].DTOS;
-using [assembly-generic].Models;
-using [assembly-generic].Services;
+using Vyracare.Api.Client.DTOS;
+using Vyracare.Api.Client.Models;
+using Vyracare.Api.Client.Services;
 
-namespace [assembly-generic].Controllers;
+namespace Vyracare.Api.Client.Controllers;
 
 [ApiController]
-[Route("api/[table-route-generic]")]
-public class [resource-generic]Controller : ControllerBase
+[Route("api/client")]
+public class ClientController : ControllerBase
 {
-    private readonly [resource-generic]Service _service;
+    private readonly ClientService _service;
 
-    public [resource-generic]Controller([resource-generic]Service service)
+    public ClientController(ClientService service)
     {
         _service = service;
     }
@@ -31,9 +31,9 @@ public class [resource-generic]Controller : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Create[resource-generic]Request request)
+    public async Task<IActionResult> Create([FromBody] CreateClientRequest request)
     {
-        var item = new [resource-generic]Model
+        var item = new ClientModel
         {
             Name = request.Name,
             Description = request.Description
