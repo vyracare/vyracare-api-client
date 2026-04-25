@@ -1,0 +1,9 @@
+{
+  "consumerMfe": {
+    "repositoryFullName": "vyracare/vyracare-app-user-mfe",
+    "environmentFiles": [
+      "src/environments/environments.ts"
+    ],
+    "apiUrlProperty": "clientApiUrl"
+  }
+}
