@@ -10,6 +10,8 @@ Recursos iniciais:
   - Collections separadas para `patients` e `employees`
   - Validacao basica de duplicidade por CPF e e-mail
   - Rotas base publicadas em `/api/client`
+  - Swagger habilitado em `/swagger/index.html`
+  - CORS habilitado por configuracao
 
 Rotas principais:
   - `GET /api/client/patients`
@@ -24,6 +26,7 @@ Rotas principais:
 Setup local:
   - Instale o .NET 8 SDK
   - Configure um cluster MongoDB e defina a env var `MONGO_URI` ou atualize `appsettings.json`
+  - Ajuste `Cors:AllowedOrigins` caso precise restringir os dominios permitidos
   - `dotnet restore`
   - `dotnet build`
   - `dotnet run`
