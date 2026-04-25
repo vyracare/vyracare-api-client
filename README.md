@@ -33,6 +33,10 @@ Fluxo recomendado:
   - Abra PR de `feat/*` para `develop`
   - Promova `develop` para `main` apenas apos validacao
 
+Integracao com frontend:
+  - O arquivo `.vyracare/mfe-consumer.json` define qual MFE consome esta API
+  - A esteira generica usa essa configuracao para atualizar automaticamente a URL da API no frontend correspondente
+
 Setup local:
   - Instale o .NET 8 SDK
   - Configure um cluster MongoDB e defina a env var `MONGO_URI` ou atualize `appsettings.json`
