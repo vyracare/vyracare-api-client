@@ -17,7 +17,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 
-builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<PatientService>();
 
 var app = builder.Build();
 

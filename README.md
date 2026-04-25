@@ -1,21 +1,32 @@
 vyracare-api-client (.NET 8) - MongoDB + AWS Lambda
--------------------------------------
+---------------------------------------------------
 
 Descricao:
-  - Api responsavel pelas interações com a camada de cliente
+  - API responsavel pelos cadastros operacionais consumidos pelo `vyracare-app-user-mfe`
 
 Recursos iniciais:
   - Projeto .NET 8 preparado para AWS Lambda
   - MongoDB configurado com database `vyracare`
-  - Controller inicial para a collection `client`
+  - Collections separadas para `patients` e `employees`
+  - Validacao basica de duplicidade por CPF e e-mail
   - Rotas base publicadas em `/api/client`
 
+Rotas principais:
+  - `GET /api/client/patients`
+  - `GET /api/client/patients/{id}`
+  - `GET /api/client/patients/cpf/{cpf}`
+  - `POST /api/client/patients`
+  - `GET /api/client/employees`
+  - `GET /api/client/employees/{id}`
+  - `GET /api/client/employees/email/{email}`
+  - `POST /api/client/employees`
+
 Setup local:
-  - Install .NET 8 SDK
-  - Configure a MongoDB cluster and set `MONGO_URI` env var or update `appsettings.json`
+  - Instale o .NET 8 SDK
+  - Configure um cluster MongoDB e defina a env var `MONGO_URI` ou atualize `appsettings.json`
   - `dotnet restore`
   - `dotnet build`
   - `dotnet run`
 
-To publish:
+Para publicar:
   - `dotnet publish -c Release -o ./publish`
