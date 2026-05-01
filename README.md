@@ -47,3 +47,5 @@ Setup local:
 
 Para publicar:
   - `dotnet publish -c Release -o ./publish`
+  - Garanta que o secret `MONGO_URI` esteja configurado no repositório para a Lambda acessar o MongoDB correto
+  - Opcionalmente configure `CORS_ALLOWED_ORIGINS` para sobrescrever as origens permitidas
