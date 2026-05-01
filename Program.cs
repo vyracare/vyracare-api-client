@@ -41,7 +41,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API responsavel pelos cadastros operacionais consumidos pelo vyracare-app-user-mfe."
     });
 });
-builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<PatientService>();
