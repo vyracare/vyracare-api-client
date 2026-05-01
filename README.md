@@ -12,6 +12,7 @@ Recursos iniciais:
   - Rotas base publicadas em `/api/client`
   - Swagger habilitado em `/swagger/index.html`
   - CORS habilitado por configuracao
+  - JWT obrigatorio em todos os endpoints da API
 
 Rotas principais:
   - `GET /api/client/patients`
@@ -23,6 +24,20 @@ Rotas principais:
   - `GET /api/client/employees/email/{email}`
   - `POST /api/client/employees`
 
+Fluxo de branches:
+  - `main`: branch protegida para codigo pronto para producao
+  - `develop`: branch protegida para consolidacao das entregas
+  - `feat/*`: branches de desenvolvimento abertas a partir de `develop`
+
+Fluxo recomendado:
+  - Crie novas entregas a partir de `develop`
+  - Abra PR de `feat/*` para `develop`
+  - Promova `develop` para `main` apenas apos validacao
+
+Integracao com frontend:
+  - O arquivo `.vyracare/mfe-consumer.json` define qual MFE consome esta API
+  - A esteira generica usa essa configuracao para atualizar automaticamente a URL da API no frontend correspondente
+
 Setup local:
   - Instale o .NET 8 SDK
   - Configure um cluster MongoDB e defina a env var `MONGO_URI` ou atualize `appsettings.json`
@@ -33,3 +48,6 @@ Setup local:
 
 Para publicar:
   - `dotnet publish -c Release -o ./publish`
+  - Garanta que o secret `MONGO_URI` esteja configurado no repositório para a Lambda acessar o MongoDB correto
+  - Opcionalmente configure `CORS_ALLOWED_ORIGINS` para sobrescrever as origens permitidas
+  - Opcionalmente configure `JWT_KEY`, `JWT_ISSUER` e `JWT_AUDIENCE` para sobrescrever os valores versionados
