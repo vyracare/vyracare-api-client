@@ -12,6 +12,7 @@ Recursos iniciais:
   - Rotas base publicadas em `/api/client`
   - Swagger habilitado em `/swagger/index.html`
   - CORS habilitado por configuracao
+  - JWT obrigatorio em todos os endpoints da API
 
 Rotas principais:
   - `GET /api/client/patients`
@@ -49,3 +50,4 @@ Para publicar:
   - `dotnet publish -c Release -o ./publish`
   - Garanta que o secret `MONGO_URI` esteja configurado no repositório para a Lambda acessar o MongoDB correto
   - Opcionalmente configure `CORS_ALLOWED_ORIGINS` para sobrescrever as origens permitidas
+  - Opcionalmente configure `JWT_KEY`, `JWT_ISSUER` e `JWT_AUDIENCE` para sobrescrever os valores versionados
