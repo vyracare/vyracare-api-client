@@ -4,6 +4,9 @@
     "environmentFiles": [
       "src/environments/environments.ts"
     ],
-    "apiUrlProperty": "clientApiUrl"
+    "apiUrlProperty": "clientApiUrl",
+    "environmentProperties": {
+      "authApiUrl": "https://ef39m2gyya.execute-api.us-east-1.amazonaws.com/api/auth"
+    }
   }
 }

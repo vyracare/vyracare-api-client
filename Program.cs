@@ -5,9 +5,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using System.Text;
+using Vyracare.Api.Client.Infrastructure;
 using Vyracare.Api.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+await SecretsManagerBootstrapper.ApplyAsync(builder.Configuration);
 var configuration = builder.Configuration;
 
 var mongoUri = configuration["Mongo:ConnectionString"] ?? Environment.GetEnvironmentVariable("MONGO_URI") ?? "mongodb://localhost:27017";
@@ -16,7 +18,7 @@ var corsAllowedOriginsRaw = configuration["Cors:AllowedOrigins"] ?? Environment.
 var corsAllowedOrigins = corsAllowedOriginsRaw
     .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-var jwtKey = configuration["Jwt:Key"] ?? Environment.GetEnvironmentVariable("JWT_KEY") ?? "replace_this_with_a_long_random_secret_change_in_prod";
+var jwtKey = configuration["Jwt:Key"] ?? Environment.GetEnvironmentVariable("JWT_KEY") ?? throw new InvalidOperationException("Jwt:Key nao configurado.");
 var jwtIssuer = configuration["Jwt:Issuer"] ?? Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "vyracare-auth";
 var jwtAudience = configuration["Jwt:Audience"] ?? Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "vyracare-client";
 
