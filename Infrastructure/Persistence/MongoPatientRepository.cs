@@ -5,38 +5,59 @@ using Vyracare.Api.Client.Infrastructure.Persistence.Documents;
 
 namespace Vyracare.Api.Client.Infrastructure.Persistence;
 
+/// <summary>
+/// Implementa a integra??o com a persist?ncia ou com uma depend?ncia externa da aplica??o.
+/// </summary>
 public sealed class MongoPatientRepository : IPatientRepository
 {
     private readonly IMongoCollection<PatientDocument> _collection;
 
+/// <summary>
+/// Inicializa uma nova inst?ncia de MongoPatientRepository.
+/// </summary>
     public MongoPatientRepository(IMongoDatabase database)
     {
         _collection = database.GetCollection<PatientDocument>("patients");
     }
 
+/// <summary>
+/// Recupera a cole??o de registros dispon?veis para esta feature.
+/// </summary>
     public async Task<IReadOnlyCollection<Patient>> ListAsync()
     {
         var documents = await _collection.Find(Builders<PatientDocument>.Filter.Empty).ToListAsync();
         return documents.Select(MapToDomain).ToArray();
     }
 
+/// <summary>
+/// Recupera um registro espec?fico a partir do seu identificador.
+/// </summary>
     public async Task<Patient?> GetByIdAsync(string id)
     {
         var document = await _collection.Find(item => item.Id == id).FirstOrDefaultAsync();
         return document is null ? null : MapToDomain(document);
     }
 
+/// <summary>
+/// Recupera um paciente a partir do CPF informado.
+/// </summary>
     public async Task<Patient?> GetByCpfAsync(string cpf)
     {
         var document = await _collection.Find(item => item.Cpf == cpf).FirstOrDefaultAsync();
         return document is null ? null : MapToDomain(document);
     }
 
+/// <summary>
+/// Verifica se j? existe um paciente cadastrado com o CPF informado.
+/// </summary>
     public async Task<bool> ExistsByCpfAsync(string cpf)
     {
         return await _collection.Find(item => item.Cpf == cpf).AnyAsync();
     }
 
+/// <summary>
+/// Persiste um novo registro e devolve a entidade resultante da opera??o.
+/// </summary>
     public async Task<Patient> AddAsync(Patient patient)
     {
         var document = MapToDocument(patient);

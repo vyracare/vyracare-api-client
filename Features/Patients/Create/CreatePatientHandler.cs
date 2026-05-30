@@ -5,17 +5,26 @@ using Vyracare.Api.Client.Features.Patients.Shared.Ports;
 
 namespace Vyracare.Api.Client.Features.Patients.Create;
 
+/// <summary>
+/// Implementa a regra de neg?cio do caso de uso representado por esta pasta.
+/// </summary>
 public sealed class CreatePatientHandler
 {
     private readonly IPatientRepository _repository;
     private readonly IClock _clock;
 
+/// <summary>
+/// Inicializa uma nova inst?ncia de CreatePatientHandler.
+/// </summary>
     public CreatePatientHandler(IPatientRepository repository, IClock clock)
     {
         _repository = repository;
         _clock = clock;
     }
 
+/// <summary>
+/// Executa o caso de uso e devolve o resultado padronizado da opera??o.
+/// </summary>
     public async Task<UseCaseResult<Patient>> HandleAsync(CreatePatientRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.FullName) || string.IsNullOrWhiteSpace(request.Cpf))

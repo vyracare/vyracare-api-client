@@ -232,7 +232,7 @@ Swagger:
 
 ---
 
-## Resumo para um desenvolvedor junior
+## Resumo para desenvolvedores
 
 Pense na API assim:
 

@@ -9,9 +9,15 @@ namespace Vyracare.Api.Client.Features.Employees;
 
 [ApiController]
 [Route("api/client/employees")]
+/// <summary>
+/// Exp?e os endpoints HTTP desta feature e delega o processamento para os handlers da aplica??o.
+/// </summary>
 public sealed class EmployeesController : ControllerBase
 {
     [HttpGet]
+/// <summary>
+/// Executa a responsabilidade associada a g et al l.
+/// </summary>
     public async Task<IActionResult> GetAll([FromServices] ListEmployeesHandler handler)
     {
         var result = await handler.HandleAsync();
@@ -19,6 +25,9 @@ public sealed class EmployeesController : ControllerBase
     }
 
     [HttpGet("{id}")]
+/// <summary>
+/// Executa a responsabilidade associada a g et by id.
+/// </summary>
     public async Task<IActionResult> GetById(string id, [FromServices] GetEmployeeByIdHandler handler)
     {
         var result = await handler.HandleAsync(id);
@@ -26,6 +35,9 @@ public sealed class EmployeesController : ControllerBase
     }
 
     [HttpGet("email/{email}")]
+/// <summary>
+/// Executa a responsabilidade associada a g et by em ai l.
+/// </summary>
     public async Task<IActionResult> GetByEmail(string email, [FromServices] GetEmployeeByEmailHandler handler)
     {
         var result = await handler.HandleAsync(email);
@@ -33,6 +45,9 @@ public sealed class EmployeesController : ControllerBase
     }
 
     [HttpPost]
+/// <summary>
+/// Executa a responsabilidade associada a c re at e.
+/// </summary>
     public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest request, [FromServices] CreateEmployeeHandler handler)
     {
         var result = await handler.HandleAsync(request);

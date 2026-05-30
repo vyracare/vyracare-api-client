@@ -1,5 +1,8 @@
 namespace Vyracare.Api.Client.Features.Patients.Create;
 
+/// <summary>
+/// Define o contrato de entrada esperado por este caso de uso.
+/// </summary>
 public sealed record CreatePatientRequest(
     string FullName,
     string BirthDate,
