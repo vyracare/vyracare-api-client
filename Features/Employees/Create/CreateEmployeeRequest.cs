@@ -1,6 +1,6 @@
-namespace Vyracare.Api.Client.DTOS;
+namespace Vyracare.Api.Client.Features.Employees.Create;
 
-public record CreateEmployeeRequest(
+public sealed record CreateEmployeeRequest(
     string FullName,
     string Email,
     string Role,

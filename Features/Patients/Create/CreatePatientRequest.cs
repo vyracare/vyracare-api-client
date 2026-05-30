@@ -1,6 +1,6 @@
-namespace Vyracare.Api.Client.DTOS;
+namespace Vyracare.Api.Client.Features.Patients.Create;
 
-public record CreatePatientRequest(
+public sealed record CreatePatientRequest(
     string FullName,
     string BirthDate,
     string Gender,

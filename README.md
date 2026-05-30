@@ -1,54 +1,92 @@
-vyracare-api-client (.NET 8) - MongoDB + AWS Lambda
----------------------------------------------------
+# vyracare-api-client
 
-Descricao:
-  - API responsavel pelos cadastros operacionais consumidos pelo `vyracare-app-user-mfe`
+API .NET 8 responsavel pelos cadastros operacionais de pacientes e colaboradores consumidos pelo `vyracare-app-user-mfe`.
 
-Recursos iniciais:
-  - Projeto .NET 8 preparado para AWS Lambda
-  - MongoDB configurado com database `vyracare`
-  - Collections separadas para `patients` e `employees`
-  - Validacao basica de duplicidade por CPF e e-mail
-  - Rotas base publicadas em `/api/client`
-  - Swagger habilitado em `/swagger/index.html`
-  - CORS habilitado por configuracao
-  - JWT obrigatorio em todos os endpoints da API
+## Estrutura
 
-Rotas principais:
-  - `GET /api/client/patients`
-  - `GET /api/client/patients/{id}`
-  - `GET /api/client/patients/cpf/{cpf}`
-  - `POST /api/client/patients`
-  - `GET /api/client/employees`
-  - `GET /api/client/employees/{id}`
-  - `GET /api/client/employees/email/{email}`
-  - `POST /api/client/employees`
+O projeto segue um modelo de `vertical slice` por feature.
 
-Fluxo de branches:
-  - `main`: branch protegida para codigo pronto para producao
-  - `develop`: branch protegida para consolidacao das entregas
-  - `feat/*`: branches de desenvolvimento abertas a partir de `develop`
+- `Features/Patients`
+  Fluxos de criacao, listagem, consulta por id e consulta por CPF.
+- `Features/Employees`
+  Fluxos de criacao, listagem, consulta por id e consulta por e-mail.
+- `Features/*/Shared`
+  Entidades de dominio (`Patient`, `Employee`) e portas de persistencia.
+- `Common`
+  Tipos compartilhados de configuracao, resultado de caso de uso, extensoes HTTP e abstração de tempo.
+- `Infrastructure/Persistence`
+  Adapters MongoDB para pacientes e colaboradores.
+- `Infrastructure/DependencyInjection`
+  Configuracao do container e bootstrap do banco.
 
-Fluxo recomendado:
-  - Crie novas entregas a partir de `develop`
-  - Abra PR de `feat/*` para `develop`
-  - Promova `develop` para `main` apenas apos validacao
+Arquivos centrais:
+- [Program.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Program.cs)
+- [PatientsController.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Patients/PatientsController.cs)
+- [EmployeesController.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Employees/EmployeesController.cs)
+- [ServiceCollectionExtensions.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Infrastructure/DependencyInjection/ServiceCollectionExtensions.cs)
 
-Integracao com frontend:
-  - O arquivo `.vyracare/mfe-consumer.json` define qual MFE consome esta API
-  - A esteira generica usa essa configuracao para atualizar automaticamente a URL da API no frontend correspondente
+## Rotas
 
-Setup local:
-  - Instale o .NET 8 SDK
-  - Configure `dotnet user-secrets` ou use as env vars `MONGO_URI` e `JWT_KEY`
-  - Ajuste `Cors:AllowedOrigins` caso precise restringir os dominios permitidos
-  - `dotnet restore`
-  - `dotnet build`
-  - `dotnet run`
+Base path:
 
-Para publicar:
-  - `dotnet publish -c Release -o ./publish`
-  - Em runtime, a API busca `Mongo:ConnectionString` no secret `vyracare/shared/mongo`
-  - A chave JWT e buscada no secret `vyracare/shared/jwt-signing`
-  - Opcionalmente configure `CORS_ALLOWED_ORIGINS` para sobrescrever as origens permitidas
-  - `JWT_ISSUER` e `JWT_AUDIENCE` podem continuar vindo de env vars quando necessario
+- `/api/client`
+
+Endpoints:
+- `GET /api/client/patients`
+- `GET /api/client/patients/{id}`
+- `GET /api/client/patients/cpf/{cpf}`
+- `POST /api/client/patients`
+- `GET /api/client/employees`
+- `GET /api/client/employees/{id}`
+- `GET /api/client/employees/email/{email}`
+- `POST /api/client/employees`
+
+## Seguranca e configuracao
+
+- JWT obrigatorio em todos os endpoints.
+- Configuracao sensivel carregada via `SecretsManagerBootstrapper`.
+- Secrets padrao:
+  - `vyracare/shared/mongo`
+  - `vyracare/shared/jwt-signing`
+
+Fallbacks suportados:
+- `MONGO_URI`
+- `JWT_KEY`
+- `JWT_ISSUER`
+- `JWT_AUDIENCE`
+- `CORS_ALLOWED_ORIGINS`
+
+## Testes unitarios
+
+Camada de testes:
+
+- [Vyracare.Api.Client.Tests.csproj](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Vyracare.Api.Client.Tests/Vyracare.Api.Client.Tests.csproj)
+
+Cobertura inicial incluida:
+- `CreatePatientHandler`
+- `CreateEmployeeHandler`
+
+Comando esperado:
+
+```bash
+dotnet test Vyracare.Api.Client.Tests/Vyracare.Api.Client.Tests.csproj
+```
+
+## Integracao com frontend
+
+O arquivo [.vyracare/mfe-consumer.json](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/.vyracare/mfe-consumer.json) declara o frontend consumidor e permite que a esteira atualize automaticamente os arquivos de ambiente quando a URL publicada da API muda.
+
+## Execucao local
+
+```bash
+dotnet restore
+dotnet build
+dotnet run
+```
+
+## Deploy
+
+Publica em AWS Lambda + HTTP API com Swagger habilitado em:
+
+- `/swagger/index.html`
+- `/swagger/v1/swagger.json`
