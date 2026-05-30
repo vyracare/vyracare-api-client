@@ -40,7 +40,7 @@ Integracao com frontend:
 
 Setup local:
   - Instale o .NET 8 SDK
-  - Configure um cluster MongoDB e defina a env var `MONGO_URI` ou atualize `appsettings.json`
+  - Configure `dotnet user-secrets` ou use as env vars `MONGO_URI` e `JWT_KEY`
   - Ajuste `Cors:AllowedOrigins` caso precise restringir os dominios permitidos
   - `dotnet restore`
   - `dotnet build`
@@ -48,6 +48,7 @@ Setup local:
 
 Para publicar:
   - `dotnet publish -c Release -o ./publish`
-  - Garanta que o secret `MONGO_URI` esteja configurado no repositório para a Lambda acessar o MongoDB correto
+  - Em runtime, a API busca `Mongo:ConnectionString` no secret `vyracare/shared/mongo`
+  - A chave JWT e buscada no secret `vyracare/shared/jwt-signing`
   - Opcionalmente configure `CORS_ALLOWED_ORIGINS` para sobrescrever as origens permitidas
-  - Opcionalmente configure `JWT_KEY`, `JWT_ISSUER` e `JWT_AUDIENCE` para sobrescrever os valores versionados
+  - `JWT_ISSUER` e `JWT_AUDIENCE` podem continuar vindo de env vars quando necessario
