@@ -10,13 +10,13 @@ namespace Vyracare.Api.Client.Features.Employees;
 [ApiController]
 [Route("api/client/employees")]
 /// <summary>
-/// Exp?e os endpoints HTTP desta feature e delega o processamento para os handlers da aplica??o.
+/// Expõe os endpoints HTTP da feature e delega o processamento aos handlers da aplicação.
 /// </summary>
 public sealed class EmployeesController : ControllerBase
 {
     [HttpGet]
 /// <summary>
-/// Executa a responsabilidade associada a g et al l.
+/// Executa a responsabilidade do método G et Al l.
 /// </summary>
     public async Task<IActionResult> GetAll([FromServices] ListEmployeesHandler handler)
     {
@@ -26,7 +26,7 @@ public sealed class EmployeesController : ControllerBase
 
     [HttpGet("{id}")]
 /// <summary>
-/// Executa a responsabilidade associada a g et by id.
+/// Executa a responsabilidade do método G et By Id.
 /// </summary>
     public async Task<IActionResult> GetById(string id, [FromServices] GetEmployeeByIdHandler handler)
     {
@@ -36,7 +36,7 @@ public sealed class EmployeesController : ControllerBase
 
     [HttpGet("email/{email}")]
 /// <summary>
-/// Executa a responsabilidade associada a g et by em ai l.
+/// Executa a responsabilidade do método G et By Em ai l.
 /// </summary>
     public async Task<IActionResult> GetByEmail(string email, [FromServices] GetEmployeeByEmailHandler handler)
     {
@@ -46,7 +46,7 @@ public sealed class EmployeesController : ControllerBase
 
     [HttpPost]
 /// <summary>
-/// Executa a responsabilidade associada a c re at e.
+/// Executa a responsabilidade do método C re at e.
 /// </summary>
     public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest request, [FromServices] CreateEmployeeHandler handler)
     {

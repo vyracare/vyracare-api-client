@@ -5,14 +5,14 @@ using Vyracare.Api.Client.Features.Patients.Shared.Ports;
 namespace Vyracare.Api.Client.Features.Patients.GetByCpf;
 
 /// <summary>
-/// Implementa a regra de neg?cio do caso de uso representado por esta pasta.
+/// Implementa o caso de uso correspondente a esta feature.
 /// </summary>
 public sealed class GetPatientByCpfHandler
 {
     private readonly IPatientRepository _repository;
 
 /// <summary>
-/// Inicializa uma nova inst?ncia de GetPatientByCpfHandler.
+/// Inicializa uma nova instância de GetPatientByCpfHandler.
 /// </summary>
     public GetPatientByCpfHandler(IPatientRepository repository)
     {
@@ -20,7 +20,7 @@ public sealed class GetPatientByCpfHandler
     }
 
 /// <summary>
-/// Executa o caso de uso e devolve o resultado padronizado da opera??o.
+/// Executa o caso de uso e devolve o resultado padronizado da operação.
 /// </summary>
     public async Task<UseCaseResult<Patient>> HandleAsync(string cpf)
     {

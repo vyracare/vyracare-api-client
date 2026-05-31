@@ -1,144 +1,144 @@
 namespace Vyracare.Api.Client.Features.Patients.Shared.Domain;
 
 /// <summary>
-/// Representa uma parte da arquitetura desta API.
+/// Representa a entidade de domínio principal desta feature.
 /// </summary>
 public sealed class Patient
 {
 /// <summary>
-/// Identificador do registro ou do recurso processado.
+/// Obtém ou define o identificador do registro.
 /// </summary>
     public string? Id { get; set; }
 /// <summary>
-/// Obt?m ou define f ul ln am e.
+/// Obtém ou define o nome completo associado ao registro.
 /// </summary>
     public string FullName { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define b ir th da te.
+/// Obtém ou define a data de nascimento associada ao registro.
 /// </summary>
     public string BirthDate { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define g en de r.
+/// Obtém ou define o gênero associado ao registro.
 /// </summary>
     public string Gender { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define c pf.
+/// Obtém ou define o CPF associado ao registro.
 /// </summary>
     public string Cpf { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define r g.
+/// Obtém ou define o valor da propriedade R g.
 /// </summary>
     public string? Rg { get; set; }
 /// <summary>
-/// Obt?m ou define e ma il.
+/// Obtém ou define o e-mail associado ao registro.
 /// </summary>
     public string Email { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define p ho ne.
+/// Obtém ou define o telefone associado ao registro.
 /// </summary>
     public string Phone { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define w ha ts ap p.
+/// Obtém ou define o valor da propriedade W ha ts ap p.
 /// </summary>
     public string? Whatsapp { get; set; }
 /// <summary>
-/// Obt?m ou define a dd re ss st re et.
+/// Obtém ou define o valor da propriedade A dd re ss St re et.
 /// </summary>
     public string AddressStreet { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define a dd re ss nu mb er.
+/// Obtém ou define o valor da propriedade A dd re ss Nu mb er.
 /// </summary>
     public string AddressNumber { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define a dd re ss co mp le me nt.
+/// Obtém ou define o valor da propriedade A dd re ss Co mp le me nt.
 /// </summary>
     public string? AddressComplement { get; set; }
 /// <summary>
-/// Obt?m ou define a dd re ss ne ig hb or ho od.
+/// Obtém ou define o valor da propriedade A dd re ss Ne ig hb or ho od.
 /// </summary>
     public string AddressNeighborhood { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define a dd re ss ci ty.
+/// Obtém ou define o valor da propriedade A dd re ss Ci ty.
 /// </summary>
     public string AddressCity { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define a dd re ss st at e.
+/// Obtém ou define o valor da propriedade A dd re ss St at e.
 /// </summary>
     public string AddressState { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define a dd re ss zi p.
+/// Obtém ou define o valor da propriedade A dd re ss Zi p.
 /// </summary>
     public string AddressZip { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define e me rg en cy co nt ac tn am e.
+/// Obtém ou define o nome do contato de emergência.
 /// </summary>
     public string EmergencyContactName { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define e me rg en cy co nt ac tp ho ne.
+/// Obtém ou define o telefone do contato de emergência.
 /// </summary>
     public string EmergencyContactPhone { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define m ai nc om pl ai nt.
+/// Obtém ou define o valor da propriedade M ai nC om pl ai nt.
 /// </summary>
     public string MainComplaint { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define o bj ec ti ve s.
+/// Obtém ou define o valor da propriedade O bj ec ti ve s.
 /// </summary>
     public string Objectives { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define m ed ic al co nd it io ns.
+/// Obtém ou define o valor da propriedade M ed ic al Co nd it io ns.
 /// </summary>
     public string? MedicalConditions { get; set; }
 /// <summary>
-/// Obt?m ou define a ll er gi es.
+/// Obtém ou define o valor da propriedade A ll er gi es.
 /// </summary>
     public string? Allergies { get; set; }
 /// <summary>
-/// Obt?m ou define m ed ic at io ns.
+/// Obtém ou define o valor da propriedade M ed ic at io ns.
 /// </summary>
     public string? Medications { get; set; }
 /// <summary>
-/// Obt?m ou define p re vi ou ss ur ge ri es.
+/// Obtém ou define o valor da propriedade P re vi ou sS ur ge ri es.
 /// </summary>
     public string? PreviousSurgeries { get; set; }
 /// <summary>
-/// Obt?m ou define a es th et ic pr oc ed ur es.
+/// Obtém ou define o valor da propriedade A es th et ic Pr oc ed ur es.
 /// </summary>
     public string? AestheticProcedures { get; set; }
 /// <summary>
-/// Obt?m ou define s ki nt yp e.
+/// Obtém ou define o valor da propriedade S ki nT yp e.
 /// </summary>
     public string? SkinType { get; set; }
 /// <summary>
-/// Obt?m ou define s un ex po su re.
+/// Obtém ou define o valor da propriedade S un Ex po su re.
 /// </summary>
     public string? SunExposure { get; set; }
 /// <summary>
-/// Obt?m ou define s mo ki ng.
+/// Obtém ou define o valor da propriedade S mo ki ng.
 /// </summary>
     public bool Smoking { get; set; }
 /// <summary>
-/// Obt?m ou define a lc oh ol.
+/// Obtém ou define o valor da propriedade A lc oh ol.
 /// </summary>
     public bool Alcohol { get; set; }
 /// <summary>
-/// Obt?m ou define p re gn an to rb re as tf ee di ng.
+/// Obtém ou define o valor da propriedade P re gn an tO rB re as tf ee di ng.
 /// </summary>
     public bool PregnantOrBreastfeeding { get; set; }
 /// <summary>
-/// Obt?m ou define c on se nt.
+/// Obtém ou define se o consentimento correspondente foi registrado.
 /// </summary>
     public bool Consent { get; set; }
 /// <summary>
-/// Obt?m ou define n ot es.
+/// Obtém ou define as observações associadas ao registro.
 /// </summary>
     public string? Notes { get; set; }
 /// <summary>
-/// Data de cria??o do registro.
+/// Obtém ou define a data de criação do registro.
 /// </summary>
     public DateTime CreatedAt { get; set; }
 /// <summary>
-/// Data da ?ltima atualiza??o do registro.
+/// Obtém ou define a data da última atualização do registro.
 /// </summary>
     public DateTime UpdatedAt { get; set; }
 }

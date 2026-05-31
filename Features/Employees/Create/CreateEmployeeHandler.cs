@@ -6,7 +6,7 @@ using Vyracare.Api.Client.Features.Employees.Shared.Ports;
 namespace Vyracare.Api.Client.Features.Employees.Create;
 
 /// <summary>
-/// Implementa a regra de neg?cio do caso de uso representado por esta pasta.
+/// Implementa o caso de uso correspondente a esta feature.
 /// </summary>
 public sealed class CreateEmployeeHandler
 {
@@ -14,7 +14,7 @@ public sealed class CreateEmployeeHandler
     private readonly IClock _clock;
 
 /// <summary>
-/// Inicializa uma nova inst?ncia de CreateEmployeeHandler.
+/// Inicializa uma nova instância de CreateEmployeeHandler.
 /// </summary>
     public CreateEmployeeHandler(IEmployeeRepository repository, IClock clock)
     {
@@ -23,7 +23,7 @@ public sealed class CreateEmployeeHandler
     }
 
 /// <summary>
-/// Executa o caso de uso e devolve o resultado padronizado da opera??o.
+/// Executa o caso de uso e devolve o resultado padronizado da operação.
 /// </summary>
     public async Task<UseCaseResult<Employee>> HandleAsync(CreateEmployeeRequest request)
     {

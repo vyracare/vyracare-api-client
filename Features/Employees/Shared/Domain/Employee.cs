@@ -1,48 +1,48 @@
 namespace Vyracare.Api.Client.Features.Employees.Shared.Domain;
 
 /// <summary>
-/// Representa uma parte da arquitetura desta API.
+/// Representa a entidade de domínio principal desta feature.
 /// </summary>
 public sealed class Employee
 {
 /// <summary>
-/// Identificador do registro ou do recurso processado.
+/// Obtém ou define o identificador do registro.
 /// </summary>
     public string? Id { get; set; }
 /// <summary>
-/// Obt?m ou define f ul ln am e.
+/// Obtém ou define o nome completo associado ao registro.
 /// </summary>
     public string FullName { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define e ma il.
+/// Obtém ou define o e-mail associado ao registro.
 /// </summary>
     public string Email { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define r ol e.
+/// Obtém ou define o papel atribuído ao registro.
 /// </summary>
     public string Role { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define d ep ar tm en t.
+/// Obtém ou define o departamento associado ao registro.
 /// </summary>
     public string? Department { get; set; }
 /// <summary>
-/// Obt?m ou define p ho ne.
+/// Obtém ou define o telefone associado ao registro.
 /// </summary>
     public string? Phone { get; set; }
 /// <summary>
-/// Obt?m ou define a cc es sl ev el.
+/// Obtém ou define o nível de acesso associado ao registro.
 /// </summary>
     public string AccessLevel { get; set; } = string.Empty;
 /// <summary>
-/// Obt?m ou define a ct iv e.
+/// Obtém ou define se o registro está ativo.
 /// </summary>
     public bool Active { get; set; }
 /// <summary>
-/// Data de cria??o do registro.
+/// Obtém ou define a data de criação do registro.
 /// </summary>
     public DateTime CreatedAt { get; set; }
 /// <summary>
-/// Data da ?ltima atualiza??o do registro.
+/// Obtém ou define a data da última atualização do registro.
 /// </summary>
     public DateTime UpdatedAt { get; set; }
 }

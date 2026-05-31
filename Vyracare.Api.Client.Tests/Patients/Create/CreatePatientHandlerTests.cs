@@ -7,13 +7,13 @@ using Vyracare.Api.Client.Features.Patients.Shared.Ports;
 namespace Vyracare.Api.Client.Tests.Patients.Create;
 
 /// <summary>
-/// Agrupa os cen?rios de teste unit?rio relacionados a este componente.
+/// Representa o componente CreatePatientHandlerTests da aplicação.
 /// </summary>
 public sealed class CreatePatientHandlerTests
 {
     [Fact]
 /// <summary>
-/// Executa a responsabilidade associada a d ev e r et or na r c on fl ic t q ua nd o c pf j a e xi st ir.
+/// Executa a responsabilidade do método D ev e_r et or na r_c on fl ic t_q ua nd o_c pf_j a_e xi st ir.
 /// </summary>
     public async Task Deve_retornar_conflict_quando_cpf_ja_existir()
     {
@@ -27,7 +27,7 @@ public sealed class CreatePatientHandlerTests
 
     [Fact]
 /// <summary>
-/// Executa a responsabilidade associada a d ev e c ri ar p ac ie nt e q ua nd o c pf f or i ne di to.
+/// Executa a responsabilidade do método D ev e_c ri ar_p ac ie nt e_q ua nd o_c pf_f or_i ne di to.
 /// </summary>
     public async Task Deve_criar_paciente_quando_cpf_for_inedito()
     {
@@ -79,7 +79,7 @@ public sealed class CreatePatientHandlerTests
         private readonly bool _alreadyExists;
 
 /// <summary>
-/// Executa a responsabilidade associada a f ak ep at ie nt re po si to ry.
+/// Inicializa uma nova instância de FakePatientRepository.
 /// </summary>
         public FakePatientRepository(bool alreadyExists)
         {
@@ -87,12 +87,12 @@ public sealed class CreatePatientHandlerTests
         }
 
 /// <summary>
-/// Obt?m ou define i te ms.
+/// Obtém ou define a coleção de itens usada no contexto do teste.
 /// </summary>
         public List<Patient> Items { get; } = [];
 
 /// <summary>
-/// Persiste um novo registro e devolve a entidade resultante da opera??o.
+/// Persiste um novo registro e devolve a entidade resultante da operação.
 /// </summary>
         public Task<Patient> AddAsync(Patient patient)
         {
@@ -102,22 +102,22 @@ public sealed class CreatePatientHandlerTests
         }
 
 /// <summary>
-/// Verifica se j? existe um paciente cadastrado com o CPF informado.
+/// Executa a responsabilidade do método E xi st sB yC pf As yn c.
 /// </summary>
         public Task<bool> ExistsByCpfAsync(string cpf) => Task.FromResult(_alreadyExists);
 
 /// <summary>
-/// Recupera um paciente a partir do CPF informado.
+/// Recupera um registro específico a partir do CPF informado.
 /// </summary>
         public Task<Patient?> GetByCpfAsync(string cpf) => Task.FromResult<Patient?>(null);
 
 /// <summary>
-/// Recupera um registro espec?fico a partir do seu identificador.
+/// Recupera um registro específico a partir do identificador informado.
 /// </summary>
         public Task<Patient?> GetByIdAsync(string id) => Task.FromResult<Patient?>(null);
 
 /// <summary>
-/// Recupera a cole??o de registros dispon?veis para esta feature.
+/// Recupera a coleção de registros disponíveis para a feature.
 /// </summary>
         public Task<IReadOnlyCollection<Patient>> ListAsync() => Task.FromResult<IReadOnlyCollection<Patient>>(Items);
     }

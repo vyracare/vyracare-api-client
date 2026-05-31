@@ -4,14 +4,14 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Vyracare.Api.Client.Infrastructure.Persistence.Documents;
 
 /// <summary>
-/// Representa o formato persistido no MongoDB para esta entidade.
+/// Representa o documento persistido no MongoDB para esta feature.
 /// </summary>
 public sealed class PatientDocument
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
 /// <summary>
-/// Identificador do registro ou do recurso processado.
+/// Obtém ou define o identificador do registro.
 /// </summary>
     public string? Id { get; set; }
     [BsonElement("fullName")] public string FullName { get; set; } = string.Empty;

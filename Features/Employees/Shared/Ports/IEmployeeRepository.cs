@@ -3,7 +3,7 @@ using Vyracare.Api.Client.Features.Employees.Shared.Domain;
 namespace Vyracare.Api.Client.Features.Employees.Shared.Ports;
 
 /// <summary>
-/// Implementa a integra??o com a persist?ncia ou com uma depend?ncia externa da aplica??o.
+/// Define o contrato de persistência usado pela feature.
 /// </summary>
 public interface IEmployeeRepository
 {

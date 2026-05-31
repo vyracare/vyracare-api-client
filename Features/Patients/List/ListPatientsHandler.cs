@@ -5,14 +5,14 @@ using Vyracare.Api.Client.Features.Patients.Shared.Ports;
 namespace Vyracare.Api.Client.Features.Patients.List;
 
 /// <summary>
-/// Implementa a regra de neg?cio do caso de uso representado por esta pasta.
+/// Implementa o caso de uso correspondente a esta feature.
 /// </summary>
 public sealed class ListPatientsHandler
 {
     private readonly IPatientRepository _repository;
 
 /// <summary>
-/// Inicializa uma nova inst?ncia de ListPatientsHandler.
+/// Inicializa uma nova instância de ListPatientsHandler.
 /// </summary>
     public ListPatientsHandler(IPatientRepository repository)
     {
@@ -20,7 +20,7 @@ public sealed class ListPatientsHandler
     }
 
 /// <summary>
-/// Executa o caso de uso e devolve o resultado padronizado da opera??o.
+/// Executa o caso de uso e devolve o resultado padronizado da operação.
 /// </summary>
     public async Task<UseCaseResult<IReadOnlyCollection<Patient>>> HandleAsync()
     {

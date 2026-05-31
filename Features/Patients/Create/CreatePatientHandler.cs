@@ -6,7 +6,7 @@ using Vyracare.Api.Client.Features.Patients.Shared.Ports;
 namespace Vyracare.Api.Client.Features.Patients.Create;
 
 /// <summary>
-/// Implementa a regra de neg?cio do caso de uso representado por esta pasta.
+/// Implementa o caso de uso correspondente a esta feature.
 /// </summary>
 public sealed class CreatePatientHandler
 {
@@ -14,7 +14,7 @@ public sealed class CreatePatientHandler
     private readonly IClock _clock;
 
 /// <summary>
-/// Inicializa uma nova inst?ncia de CreatePatientHandler.
+/// Inicializa uma nova instância de CreatePatientHandler.
 /// </summary>
     public CreatePatientHandler(IPatientRepository repository, IClock clock)
     {
@@ -23,7 +23,7 @@ public sealed class CreatePatientHandler
     }
 
 /// <summary>
-/// Executa o caso de uso e devolve o resultado padronizado da opera??o.
+/// Executa o caso de uso e devolve o resultado padronizado da operação.
 /// </summary>
     public async Task<UseCaseResult<Patient>> HandleAsync(CreatePatientRequest request)
     {

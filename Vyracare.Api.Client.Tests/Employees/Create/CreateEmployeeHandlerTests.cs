@@ -7,13 +7,13 @@ using Vyracare.Api.Client.Features.Employees.Shared.Ports;
 namespace Vyracare.Api.Client.Tests.Employees.Create;
 
 /// <summary>
-/// Agrupa os cen?rios de teste unit?rio relacionados a este componente.
+/// Representa o componente CreateEmployeeHandlerTests da aplicação.
 /// </summary>
 public sealed class CreateEmployeeHandlerTests
 {
     [Fact]
 /// <summary>
-/// Executa a responsabilidade associada a d ev e r et or na r c on fl ic t q ua nd o e ma il j a e xi st ir.
+/// Executa a responsabilidade do método D ev e_r et or na r_c on fl ic t_q ua nd o_e ma il_j a_e xi st ir.
 /// </summary>
     public async Task Deve_retornar_conflict_quando_email_ja_existir()
     {
@@ -27,7 +27,7 @@ public sealed class CreateEmployeeHandlerTests
 
     [Fact]
 /// <summary>
-/// Executa a responsabilidade associada a d ev e c ri ar c ol ab or ad or q ua nd o e ma il f or i ne di to.
+/// Executa a responsabilidade do método D ev e_c ri ar_c ol ab or ad or_q ua nd o_e ma il_f or_i ne di to.
 /// </summary>
     public async Task Deve_criar_colaborador_quando_email_for_inedito()
     {
@@ -45,7 +45,7 @@ public sealed class CreateEmployeeHandlerTests
         private readonly bool _alreadyExists;
 
 /// <summary>
-/// Executa a responsabilidade associada a f ak ee mp lo ye er ep os it or y.
+/// Inicializa uma nova instância de FakeEmployeeRepository.
 /// </summary>
         public FakeEmployeeRepository(bool alreadyExists)
         {
@@ -53,12 +53,12 @@ public sealed class CreateEmployeeHandlerTests
         }
 
 /// <summary>
-/// Obt?m ou define i te ms.
+/// Obtém ou define a coleção de itens usada no contexto do teste.
 /// </summary>
         public List<Employee> Items { get; } = [];
 
 /// <summary>
-/// Persiste um novo registro e devolve a entidade resultante da opera??o.
+/// Persiste um novo registro e devolve a entidade resultante da operação.
 /// </summary>
         public Task<Employee> AddAsync(Employee employee)
         {
@@ -68,22 +68,22 @@ public sealed class CreateEmployeeHandlerTests
         }
 
 /// <summary>
-/// Verifica se j? existe um colaborador cadastrado com o e-mail informado.
+/// Executa a responsabilidade do método E xi st sB yE ma il As yn c.
 /// </summary>
         public Task<bool> ExistsByEmailAsync(string email) => Task.FromResult(_alreadyExists);
 
 /// <summary>
-/// Recupera um colaborador ou usu?rio a partir do e-mail informado.
+/// Recupera um registro específico a partir do e-mail informado.
 /// </summary>
         public Task<Employee?> GetByEmailAsync(string email) => Task.FromResult<Employee?>(null);
 
 /// <summary>
-/// Recupera um registro espec?fico a partir do seu identificador.
+/// Recupera um registro específico a partir do identificador informado.
 /// </summary>
         public Task<Employee?> GetByIdAsync(string id) => Task.FromResult<Employee?>(null);
 
 /// <summary>
-/// Recupera a cole??o de registros dispon?veis para esta feature.
+/// Recupera a coleção de registros disponíveis para a feature.
 /// </summary>
         public Task<IReadOnlyCollection<Employee>> ListAsync() => Task.FromResult<IReadOnlyCollection<Employee>>(Items);
     }

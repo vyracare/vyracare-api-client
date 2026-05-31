@@ -3,7 +3,7 @@ using Vyracare.Api.Client.Common.Time;
 namespace Vyracare.Api.Client.Infrastructure.Time;
 
 /// <summary>
-/// Representa o componente respons?vel por fornecer a data e hora atual para a aplica??o.
+/// Implementa o relógio padrão da aplicação usando a data e hora do sistema.
 /// </summary>
 public sealed class SystemClock : IClock
 {

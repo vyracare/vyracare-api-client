@@ -6,14 +6,14 @@ using Vyracare.Api.Client.Infrastructure.Persistence.Documents;
 namespace Vyracare.Api.Client.Infrastructure.Persistence;
 
 /// <summary>
-/// Implementa a integra??o com a persist?ncia ou com uma depend?ncia externa da aplica??o.
+/// Implementa o acesso aos dados da feature usando a infraestrutura configurada.
 /// </summary>
 public sealed class MongoEmployeeRepository : IEmployeeRepository
 {
     private readonly IMongoCollection<EmployeeDocument> _collection;
 
 /// <summary>
-/// Inicializa uma nova inst?ncia de MongoEmployeeRepository.
+/// Inicializa uma nova instância de MongoEmployeeRepository.
 /// </summary>
     public MongoEmployeeRepository(IMongoDatabase database)
     {
@@ -21,7 +21,7 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
     }
 
 /// <summary>
-/// Recupera a cole??o de registros dispon?veis para esta feature.
+/// Recupera a coleção de registros disponíveis para a feature.
 /// </summary>
     public async Task<IReadOnlyCollection<Employee>> ListAsync()
     {
@@ -30,7 +30,7 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
     }
 
 /// <summary>
-/// Recupera um registro espec?fico a partir do seu identificador.
+/// Recupera um registro específico a partir do identificador informado.
 /// </summary>
     public async Task<Employee?> GetByIdAsync(string id)
     {
@@ -39,7 +39,7 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
     }
 
 /// <summary>
-/// Recupera um colaborador ou usu?rio a partir do e-mail informado.
+/// Recupera um registro específico a partir do e-mail informado.
 /// </summary>
     public async Task<Employee?> GetByEmailAsync(string email)
     {
@@ -48,7 +48,7 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
     }
 
 /// <summary>
-/// Verifica se j? existe um colaborador cadastrado com o e-mail informado.
+/// Executa a responsabilidade do método E xi st sB yE ma il As yn c.
 /// </summary>
     public async Task<bool> ExistsByEmailAsync(string email)
     {
@@ -56,7 +56,7 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
     }
 
 /// <summary>
-/// Persiste um novo registro e devolve a entidade resultante da opera??o.
+/// Persiste um novo registro e devolve a entidade resultante da operação.
 /// </summary>
     public async Task<Employee> AddAsync(Employee employee)
     {

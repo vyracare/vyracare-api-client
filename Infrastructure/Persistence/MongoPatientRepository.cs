@@ -6,14 +6,14 @@ using Vyracare.Api.Client.Infrastructure.Persistence.Documents;
 namespace Vyracare.Api.Client.Infrastructure.Persistence;
 
 /// <summary>
-/// Implementa a integra??o com a persist?ncia ou com uma depend?ncia externa da aplica??o.
+/// Implementa o acesso aos dados da feature usando a infraestrutura configurada.
 /// </summary>
 public sealed class MongoPatientRepository : IPatientRepository
 {
     private readonly IMongoCollection<PatientDocument> _collection;
 
 /// <summary>
-/// Inicializa uma nova inst?ncia de MongoPatientRepository.
+/// Inicializa uma nova instância de MongoPatientRepository.
 /// </summary>
     public MongoPatientRepository(IMongoDatabase database)
     {
@@ -21,7 +21,7 @@ public sealed class MongoPatientRepository : IPatientRepository
     }
 
 /// <summary>
-/// Recupera a cole??o de registros dispon?veis para esta feature.
+/// Recupera a coleção de registros disponíveis para a feature.
 /// </summary>
     public async Task<IReadOnlyCollection<Patient>> ListAsync()
     {
@@ -30,7 +30,7 @@ public sealed class MongoPatientRepository : IPatientRepository
     }
 
 /// <summary>
-/// Recupera um registro espec?fico a partir do seu identificador.
+/// Recupera um registro específico a partir do identificador informado.
 /// </summary>
     public async Task<Patient?> GetByIdAsync(string id)
     {
@@ -39,7 +39,7 @@ public sealed class MongoPatientRepository : IPatientRepository
     }
 
 /// <summary>
-/// Recupera um paciente a partir do CPF informado.
+/// Recupera um registro específico a partir do CPF informado.
 /// </summary>
     public async Task<Patient?> GetByCpfAsync(string cpf)
     {
@@ -48,7 +48,7 @@ public sealed class MongoPatientRepository : IPatientRepository
     }
 
 /// <summary>
-/// Verifica se j? existe um paciente cadastrado com o CPF informado.
+/// Executa a responsabilidade do método E xi st sB yC pf As yn c.
 /// </summary>
     public async Task<bool> ExistsByCpfAsync(string cpf)
     {
@@ -56,7 +56,7 @@ public sealed class MongoPatientRepository : IPatientRepository
     }
 
 /// <summary>
-/// Persiste um novo registro e devolve a entidade resultante da opera??o.
+/// Persiste um novo registro e devolve a entidade resultante da operação.
 /// </summary>
     public async Task<Patient> AddAsync(Patient patient)
     {

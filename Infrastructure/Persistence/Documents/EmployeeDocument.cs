@@ -4,68 +4,68 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Vyracare.Api.Client.Infrastructure.Persistence.Documents;
 
 /// <summary>
-/// Representa o formato persistido no MongoDB para esta entidade.
+/// Representa o documento persistido no MongoDB para esta feature.
 /// </summary>
 public sealed class EmployeeDocument
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
 /// <summary>
-/// Identificador do registro ou do recurso processado.
+/// Obtém ou define o identificador do registro.
 /// </summary>
     public string? Id { get; set; }
 
     [BsonElement("fullName")]
 /// <summary>
-/// Obt?m ou define f ul ln am e.
+/// Obtém ou define o nome completo associado ao registro.
 /// </summary>
     public string FullName { get; set; } = string.Empty;
 
     [BsonElement("email")]
 /// <summary>
-/// Obt?m ou define e ma il.
+/// Obtém ou define o e-mail associado ao registro.
 /// </summary>
     public string Email { get; set; } = string.Empty;
 
     [BsonElement("role")]
 /// <summary>
-/// Obt?m ou define r ol e.
+/// Obtém ou define o papel atribuído ao registro.
 /// </summary>
     public string Role { get; set; } = string.Empty;
 
     [BsonElement("department")]
 /// <summary>
-/// Obt?m ou define d ep ar tm en t.
+/// Obtém ou define o departamento associado ao registro.
 /// </summary>
     public string? Department { get; set; }
 
     [BsonElement("phone")]
 /// <summary>
-/// Obt?m ou define p ho ne.
+/// Obtém ou define o telefone associado ao registro.
 /// </summary>
     public string? Phone { get; set; }
 
     [BsonElement("accessLevel")]
 /// <summary>
-/// Obt?m ou define a cc es sl ev el.
+/// Obtém ou define o nível de acesso associado ao registro.
 /// </summary>
     public string AccessLevel { get; set; } = string.Empty;
 
     [BsonElement("active")]
 /// <summary>
-/// Obt?m ou define a ct iv e.
+/// Obtém ou define se o registro está ativo.
 /// </summary>
     public bool Active { get; set; }
 
     [BsonElement("createdAt")]
 /// <summary>
-/// Data de cria??o do registro.
+/// Obtém ou define a data de criação do registro.
 /// </summary>
     public DateTime CreatedAt { get; set; }
 
     [BsonElement("updatedAt")]
 /// <summary>
-/// Data da ?ltima atualiza??o do registro.
+/// Obtém ou define a data da última atualização do registro.
 /// </summary>
     public DateTime UpdatedAt { get; set; }
 }

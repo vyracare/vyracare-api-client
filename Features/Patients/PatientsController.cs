@@ -10,13 +10,13 @@ namespace Vyracare.Api.Client.Features.Patients;
 [ApiController]
 [Route("api/client/patients")]
 /// <summary>
-/// Exp?e os endpoints HTTP desta feature e delega o processamento para os handlers da aplica??o.
+/// Expõe os endpoints HTTP da feature e delega o processamento aos handlers da aplicação.
 /// </summary>
 public sealed class PatientsController : ControllerBase
 {
     [HttpGet]
 /// <summary>
-/// Executa a responsabilidade associada a g et al l.
+/// Executa a responsabilidade do método G et Al l.
 /// </summary>
     public async Task<IActionResult> GetAll([FromServices] ListPatientsHandler handler)
     {
@@ -26,7 +26,7 @@ public sealed class PatientsController : ControllerBase
 
     [HttpGet("{id}")]
 /// <summary>
-/// Executa a responsabilidade associada a g et by id.
+/// Executa a responsabilidade do método G et By Id.
 /// </summary>
     public async Task<IActionResult> GetById(string id, [FromServices] GetPatientByIdHandler handler)
     {
@@ -36,7 +36,7 @@ public sealed class PatientsController : ControllerBase
 
     [HttpGet("cpf/{cpf}")]
 /// <summary>
-/// Executa a responsabilidade associada a g et by cp f.
+/// Executa a responsabilidade do método G et By Cp f.
 /// </summary>
     public async Task<IActionResult> GetByCpf(string cpf, [FromServices] GetPatientByCpfHandler handler)
     {
@@ -46,7 +46,7 @@ public sealed class PatientsController : ControllerBase
 
     [HttpPost]
 /// <summary>
-/// Executa a responsabilidade associada a c re at e.
+/// Executa a responsabilidade do método C re at e.
 /// </summary>
     public async Task<IActionResult> Create([FromBody] CreatePatientRequest request, [FromServices] CreatePatientHandler handler)
     {

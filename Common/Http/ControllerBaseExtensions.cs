@@ -4,7 +4,7 @@ using Vyracare.Api.Client.Common.Results;
 namespace Vyracare.Api.Client.Common.Http;
 
 /// <summary>
-/// Centraliza extens?es reutiliz?veis usadas pela aplica??o.
+/// Centraliza métodos de extensão para converter resultados de casos de uso em respostas HTTP.
 /// </summary>
 public static class ControllerBaseExtensions
 {

@@ -5,14 +5,14 @@ using Vyracare.Api.Client.Features.Employees.Shared.Ports;
 namespace Vyracare.Api.Client.Features.Employees.GetByEmail;
 
 /// <summary>
-/// Implementa a regra de neg?cio do caso de uso representado por esta pasta.
+/// Implementa o caso de uso correspondente a esta feature.
 /// </summary>
 public sealed class GetEmployeeByEmailHandler
 {
     private readonly IEmployeeRepository _repository;
 
 /// <summary>
-/// Inicializa uma nova inst?ncia de GetEmployeeByEmailHandler.
+/// Inicializa uma nova instância de GetEmployeeByEmailHandler.
 /// </summary>
     public GetEmployeeByEmailHandler(IEmployeeRepository repository)
     {
@@ -20,7 +20,7 @@ public sealed class GetEmployeeByEmailHandler
     }
 
 /// <summary>
-/// Executa o caso de uso e devolve o resultado padronizado da opera??o.
+/// Executa o caso de uso e devolve o resultado padronizado da operação.
 /// </summary>
     public async Task<UseCaseResult<Employee>> HandleAsync(string email)
     {
