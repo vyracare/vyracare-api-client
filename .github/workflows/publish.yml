@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - main
 
 jobs:
   cd-dot-net:
@@ -14,7 +15,7 @@ jobs:
       project-path: "Vyracare.Api.Client.csproj"
       output-dir: backend-publish
       api-gateway-name: "vyracare-api-client"
-      lambda-function-name: "vyracare-api-client-dev"
+      lambda-function-name: "vyracare-api-client"
       lambda-handler: "Vyracare.Api.Client"
       route-base-path: "api/client"
     secrets: inherit
