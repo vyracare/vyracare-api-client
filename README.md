@@ -151,8 +151,10 @@ Eles sao carregados por:
 
 Secrets padrao:
 
-- `vyracare/shared/mongo`
-- `vyracare/shared/jwt-signing`
+- `vyracare/shared/mongo-prod`
+- `vyracare/shared/mongo-dev`
+- `vyracare/shared/jwt-signing-prod`
+- `vyracare/shared/jwt-signing-dev`
 
 Fallbacks:
 
