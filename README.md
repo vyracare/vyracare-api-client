@@ -1,54 +1,244 @@
-vyracare-api-client (.NET 8) - MongoDB + AWS Lambda
----------------------------------------------------
+# vyracare-api-client
 
-Descricao:
-  - API responsavel pelos cadastros operacionais consumidos pelo `vyracare-app-user-mfe`
+## Visao geral
 
-Recursos iniciais:
-  - Projeto .NET 8 preparado para AWS Lambda
-  - MongoDB configurado com database `vyracare`
-  - Collections separadas para `patients` e `employees`
-  - Validacao basica de duplicidade por CPF e e-mail
-  - Rotas base publicadas em `/api/client`
-  - Swagger habilitado em `/swagger/index.html`
-  - CORS habilitado por configuracao
-  - JWT obrigatorio em todos os endpoints da API
+Esta API concentra os cadastros operacionais usados pelo `vyracare-app-user-mfe`.
 
-Rotas principais:
-  - `GET /api/client/patients`
-  - `GET /api/client/patients/{id}`
-  - `GET /api/client/patients/cpf/{cpf}`
-  - `POST /api/client/patients`
-  - `GET /api/client/employees`
-  - `GET /api/client/employees/{id}`
-  - `GET /api/client/employees/email/{email}`
-  - `POST /api/client/employees`
+Hoje ela tem dois dominios principais:
 
-Fluxo de branches:
-  - `main`: branch protegida para codigo pronto para producao
-  - `develop`: branch protegida para consolidacao das entregas
-  - `feat/*`: branches de desenvolvimento abertas a partir de `develop`
+- pacientes;
+- colaboradores.
 
-Fluxo recomendado:
-  - Crie novas entregas a partir de `develop`
-  - Abra PR de `feat/*` para `develop`
-  - Promova `develop` para `main` apenas apos validacao
+O projeto usa `vertical slice`, entao cada caso de uso fica agrupado por feature.
 
-Integracao com frontend:
-  - O arquivo `.vyracare/mfe-consumer.json` define qual MFE consome esta API
-  - A esteira generica usa essa configuracao para atualizar automaticamente a URL da API no frontend correspondente
+---
 
-Setup local:
-  - Instale o .NET 8 SDK
-  - Configure `dotnet user-secrets` ou use as env vars `MONGO_URI` e `JWT_KEY`
-  - Ajuste `Cors:AllowedOrigins` caso precise restringir os dominios permitidos
-  - `dotnet restore`
-  - `dotnet build`
-  - `dotnet run`
+## Como ler este projeto pela primeira vez
 
-Para publicar:
-  - `dotnet publish -c Release -o ./publish`
-  - Em runtime, a API busca `Mongo:ConnectionString` no secret `vyracare/shared/mongo`
-  - A chave JWT e buscada no secret `vyracare/shared/jwt-signing`
-  - Opcionalmente configure `CORS_ALLOWED_ORIGINS` para sobrescrever as origens permitidas
-  - `JWT_ISSUER` e `JWT_AUDIENCE` podem continuar vindo de env vars quando necessario
+Leia nesta ordem:
+
+1. [Program.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Program.cs)
+   Mostra como a aplicacao sobe e quais servicos sao registrados.
+
+2. Os controllers:
+   - [PatientsController.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Patients/PatientsController.cs)
+   - [EmployeesController.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Employees/EmployeesController.cs)
+
+3. Uma feature completa de paciente:
+   - [CreatePatientRequest.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Patients/Create/CreatePatientRequest.cs)
+   - [CreatePatientHandler.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Patients/Create/CreatePatientHandler.cs)
+
+4. Uma feature completa de colaborador:
+   - [CreateEmployeeRequest.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Employees/Create/CreateEmployeeRequest.cs)
+   - [CreateEmployeeHandler.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Employees/Create/CreateEmployeeHandler.cs)
+
+5. As portas:
+   - [IPatientRepository.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Patients/Shared/Ports/IPatientRepository.cs)
+   - [IEmployeeRepository.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Features/Employees/Shared/Ports/IEmployeeRepository.cs)
+
+6. Os adapters de persistencia:
+   - [MongoPatientRepository.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Infrastructure/Persistence/MongoPatientRepository.cs)
+   - [MongoEmployeeRepository.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Infrastructure/Persistence/MongoEmployeeRepository.cs)
+
+7. Os testes:
+   - [CreatePatientHandlerTests.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Vyracare.Api.Client.Tests/Patients/Create/CreatePatientHandlerTests.cs)
+   - [CreateEmployeeHandlerTests.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Vyracare.Api.Client.Tests/Employees/Create/CreateEmployeeHandlerTests.cs)
+
+---
+
+## Estrutura de pastas
+
+### `Common`
+
+Guarda pecas reutilizaveis por toda a API:
+
+- configuracoes tipadas;
+- resultado padrao dos handlers;
+- extensoes HTTP;
+- abstração de tempo.
+
+### `Features/Patients`
+
+Agrupa tudo que diz respeito a pacientes:
+
+- criar;
+- listar;
+- buscar por id;
+- buscar por CPF.
+
+### `Features/Employees`
+
+Agrupa tudo que diz respeito a colaboradores:
+
+- criar;
+- listar;
+- buscar por id;
+- buscar por e-mail.
+
+### `Shared`
+
+Dentro de cada feature existe uma pasta `Shared` com:
+
+- entidade de dominio;
+- portas do dominio.
+
+### `Infrastructure`
+
+Contem os detalhes tecnicos:
+
+- leitura de secrets;
+- conexao com MongoDB;
+- repositorios Mongo;
+- configuracao de DI.
+
+### `Vyracare.Api.Client.Tests`
+
+Projeto de testes unitarios focado nos handlers.
+
+---
+
+## Fluxo passo a passo de uma requisicao
+
+Vamos usar `POST /api/client/patients`.
+
+1. O frontend envia o JSON do formulario.
+2. O controller recebe e converte para `CreatePatientRequest`.
+3. O controller chama `CreatePatientHandler`.
+4. O handler valida regras minimas, como nome e CPF.
+5. O handler consulta `IPatientRepository` para verificar duplicidade.
+6. O handler monta a entidade `Patient`.
+7. O handler envia a entidade para o repositorio.
+8. O controller traduz o resultado para `201 Created` ou erro.
+
+O mesmo raciocinio vale para os fluxos de colaboradores.
+
+---
+
+## Endpoints
+
+Base path:
+
+- `/api/client`
+
+### Pacientes
+
+- `GET /api/client/patients`
+- `GET /api/client/patients/{id}`
+- `GET /api/client/patients/cpf/{cpf}`
+- `POST /api/client/patients`
+
+### Colaboradores
+
+- `GET /api/client/employees`
+- `GET /api/client/employees/{id}`
+- `GET /api/client/employees/email/{email}`
+- `POST /api/client/employees`
+
+---
+
+## Seguranca e configuracao
+
+Todos os endpoints exigem JWT.
+
+Segredos sensiveis:
+
+- `Mongo:ConnectionString`
+- `Jwt:Key`
+
+Eles sao carregados por:
+
+- [SecretsManagerBootstrapper.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Infrastructure/SecretsManagerBootstrapper.cs)
+
+Secrets padrao:
+
+- `vyracare/shared/mongo`
+- `vyracare/shared/jwt-signing`
+
+Fallbacks:
+
+- `MONGO_URI`
+- `JWT_KEY`
+- `JWT_ISSUER`
+- `JWT_AUDIENCE`
+- `CORS_ALLOWED_ORIGINS`
+
+---
+
+## Integracao com frontend
+
+Este projeto declara seu consumidor em:
+
+- [.vyracare/mfe-consumer.json](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/.vyracare/mfe-consumer.json)
+
+Isso permite que a pipeline atualize automaticamente a URL da API no frontend quando o gateway mudar.
+
+---
+
+## Testes unitarios
+
+### O que esta coberto hoje
+
+- conflito por CPF no cadastro de paciente;
+- criacao de paciente com sucesso;
+- conflito por e-mail no cadastro de colaborador;
+- criacao de colaborador com sucesso.
+
+### Como rodar
+
+```bash
+dotnet restore
+dotnet build --no-restore
+dotnet test Vyracare.Api.Client.Tests/Vyracare.Api.Client.Tests.csproj --no-restore
+```
+
+### Como evoluir os testes
+
+Ao criar uma nova feature:
+
+1. escreva o handler;
+2. identifique as portas usadas;
+3. crie fakes simples para essas portas;
+4. valide ao menos um cenario feliz e um de erro.
+
+---
+
+## Como adicionar um novo endpoint
+
+Exemplo: `GET /api/client/patients/email/{email}`.
+
+Passos:
+
+1. Criar a pasta `Features/Patients/GetByEmail`.
+2. Criar o handler correspondente.
+3. Avaliar se a porta `IPatientRepository` precisa de um novo metodo.
+4. Implementar o metodo em `MongoPatientRepository`.
+5. Expor a rota no `PatientsController`.
+6. Registrar o handler em `ServiceCollectionExtensions`.
+7. Criar o teste unitario.
+
+---
+
+## Execucao local
+
+```bash
+dotnet restore
+dotnet build
+dotnet run
+```
+
+Swagger:
+
+- `/swagger/index.html`
+
+---
+
+## Resumo para desenvolvedores
+
+Pense na API assim:
+
+- o controller so recebe e devolve HTTP;
+- o handler concentra a regra;
+- a entidade representa o dominio;
+- a porta define o contrato;
+- o repositorio Mongo implementa esse contrato;
+- o teste prova que o handler funciona sem precisar do banco real.

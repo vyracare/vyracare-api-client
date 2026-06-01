@@ -1,0 +1,57 @@
+using Vyracare.Api.Client.Common.Results;
+using Vyracare.Api.Client.Common.Time;
+using Vyracare.Api.Client.Features.Employees.Shared.Domain;
+using Vyracare.Api.Client.Features.Employees.Shared.Ports;
+
+namespace Vyracare.Api.Client.Features.Employees.Create;
+
+/// <summary>
+/// Implementa o caso de uso correspondente a esta feature.
+/// </summary>
+public sealed class CreateEmployeeHandler
+{
+    private readonly IEmployeeRepository _repository;
+    private readonly IClock _clock;
+
+/// <summary>
+/// Inicializa uma nova instância de CreateEmployeeHandler.
+/// </summary>
+    public CreateEmployeeHandler(IEmployeeRepository repository, IClock clock)
+    {
+        _repository = repository;
+        _clock = clock;
+    }
+
+/// <summary>
+/// Executa o caso de uso e devolve o resultado padronizado da operação.
+/// </summary>
+    public async Task<UseCaseResult<Employee>> HandleAsync(CreateEmployeeRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.FullName) || string.IsNullOrWhiteSpace(request.Email))
+        {
+            return UseCaseResult<Employee>.Failure(UseCaseErrorType.Validation, "FullName and Email are required");
+        }
+
+        if (await _repository.ExistsByEmailAsync(request.Email.Trim()))
+        {
+            return UseCaseResult<Employee>.Failure(UseCaseErrorType.Conflict, "Ja existe um colaborador cadastrado com este e-mail.");
+        }
+
+        var timestamp = _clock.UtcNow;
+        var employee = new Employee
+        {
+            FullName = request.FullName.Trim(),
+            Email = request.Email.Trim(),
+            Role = request.Role.Trim(),
+            Department = request.Department?.Trim(),
+            Phone = request.Phone?.Trim(),
+            AccessLevel = request.AccessLevel.Trim(),
+            Active = request.Active,
+            CreatedAt = timestamp,
+            UpdatedAt = timestamp
+        };
+
+        var created = await _repository.AddAsync(employee);
+        return UseCaseResult<Employee>.Success(created);
+    }
+}
