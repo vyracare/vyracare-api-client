@@ -244,3 +244,13 @@ Pense na API assim:
 - a porta define o contrato;
 - o repositorio Mongo implementa esse contrato;
 - o teste prova que o handler funciona sem precisar do banco real.
+
+## Convencao de commits
+
+Os commits deste repositorio devem ser escritos em portugues.
+
+Padrao recomendado:
+
+- `feat: adiciona consulta de paciente por email`
+- `fix: corrige validacao de documento do cliente`
+- `docs: atualiza explicacao da arquitetura da api client`
