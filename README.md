@@ -86,7 +86,7 @@ Dentro de cada feature existe uma pasta `Shared` com:
 
 Contem os detalhes tecnicos:
 
-- leitura de secrets;
+- leitura de parametros seguros;
 - conexao com MongoDB;
 - repositorios Mongo;
 - configuracao de DI.
@@ -147,13 +147,15 @@ Segredos sensiveis:
 
 Eles sao carregados por:
 
-- [SecretsManagerBootstrapper.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Infrastructure/SecretsManagerBootstrapper.cs)
+- [ParameterStoreBootstrapper.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Infrastructure/ParameterStoreBootstrapper.cs)
 
-Secrets padrao:
+Parametros padrao:
 
 - `vyracare/shared/mongo-prod`
+- `vyracare/shared/mongo-hml`
 - `vyracare/shared/mongo-dev`
 - `vyracare/shared/jwt-signing-prod`
+- `vyracare/shared/jwt-signing-hml`
 - `vyracare/shared/jwt-signing-dev`
 
 Fallbacks:
