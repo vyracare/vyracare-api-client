@@ -86,7 +86,7 @@ Dentro de cada feature existe uma pasta `Shared` com:
 
 Contem os detalhes tecnicos:
 
-- leitura de secrets;
+- leitura de parametros seguros;
 - conexao com MongoDB;
 - repositorios Mongo;
 - configuracao de DI.
@@ -147,13 +147,15 @@ Segredos sensiveis:
 
 Eles sao carregados por:
 
-- [SecretsManagerBootstrapper.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Infrastructure/SecretsManagerBootstrapper.cs)
+- [ParameterStoreBootstrapper.cs](C:/Users/lenin/OneDrive/Desktop/GitHub/Vyracare/vyracare-api-client/Infrastructure/ParameterStoreBootstrapper.cs)
 
-Secrets padrao:
+Parametros padrao:
 
 - `vyracare/shared/mongo-prod`
+- `vyracare/shared/mongo-hml`
 - `vyracare/shared/mongo-dev`
 - `vyracare/shared/jwt-signing-prod`
+- `vyracare/shared/jwt-signing-hml`
 - `vyracare/shared/jwt-signing-dev`
 
 Fallbacks:
@@ -244,3 +246,13 @@ Pense na API assim:
 - a porta define o contrato;
 - o repositorio Mongo implementa esse contrato;
 - o teste prova que o handler funciona sem precisar do banco real.
+
+## Convencao de commits
+
+Os commits deste repositorio devem ser escritos em portugues.
+
+Padrao recomendado:
+
+- `feat: adiciona consulta de paciente por email`
+- `fix: corrige validacao de documento do cliente`
+- `docs: atualiza explicacao da arquitetura da api client`

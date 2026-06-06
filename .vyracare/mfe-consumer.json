@@ -3,6 +3,7 @@
     "repositoryFullName": "vyracare/vyracare-app-user-mfe",
     "environmentFiles": [
       "src/environments/environments.ts",
+      "src/environments/environments.dev.ts",
       "src/environments/environments.hml.ts",
       "src/environments/environments.prod.ts"
     ],
