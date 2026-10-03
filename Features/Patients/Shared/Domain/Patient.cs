@@ -133,6 +133,7 @@ public sealed class Patient
 /// Obtém ou define as observações associadas ao registro.
 /// </summary>
     public string? Notes { get; set; }
+    public List<PatientNote> ProfessionalNotes { get; set; } = [];
 /// <summary>
 /// Obtém ou define a data de criação do registro.
 /// </summary>

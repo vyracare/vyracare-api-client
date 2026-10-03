@@ -23,9 +23,19 @@ public sealed class MongoPatientRepository : IPatientRepository
 /// <summary>
 /// Recupera a coleção de registros disponíveis para a feature.
 /// </summary>
-    public async Task<IReadOnlyCollection<Patient>> ListAsync()
+    public async Task<IReadOnlyCollection<Patient>> ListAsync(string? search = null)
     {
-        var documents = await _collection.Find(Builders<PatientDocument>.Filter.Empty).ToListAsync();
+        var filter = Builders<PatientDocument>.Filter.Empty;
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var pattern = new MongoDB.Bson.BsonRegularExpression(System.Text.RegularExpressions.Regex.Escape(search), "i");
+            filter = Builders<PatientDocument>.Filter.Or(
+                Builders<PatientDocument>.Filter.Regex(item => item.FullName, pattern),
+                Builders<PatientDocument>.Filter.Regex(item => item.Phone, pattern),
+                Builders<PatientDocument>.Filter.Regex(item => item.Email, pattern));
+        }
+
+        var documents = await _collection.Find(filter).SortBy(item => item.FullName).ToListAsync();
         return documents.Select(MapToDomain).ToArray();
     }
 
@@ -66,6 +76,23 @@ public sealed class MongoPatientRepository : IPatientRepository
         return patient;
     }
 
+    public async Task<Patient?> UpdateAsync(Patient patient)
+    {
+        var document = MapToDocument(patient);
+        var result = await _collection.ReplaceOneAsync(item => item.Id == patient.Id, document);
+        return result.MatchedCount == 0 ? null : patient;
+    }
+
+    public async Task<PatientNote?> AddNoteAsync(string patientId, PatientNote note)
+    {
+        var noteDocument = MapNoteToDocument(note);
+        var update = Builders<PatientDocument>.Update
+            .Push(item => item.ProfessionalNotes, noteDocument)
+            .Set(item => item.UpdatedAt, note.CreatedAt);
+        var result = await _collection.UpdateOneAsync(item => item.Id == patientId, update);
+        return result.MatchedCount == 0 ? null : note;
+    }
+
     private static PatientDocument MapToDocument(Patient patient) => new()
     {
         Id = patient.Id,
@@ -100,6 +127,7 @@ public sealed class MongoPatientRepository : IPatientRepository
         PregnantOrBreastfeeding = patient.PregnantOrBreastfeeding,
         Consent = patient.Consent,
         Notes = patient.Notes,
+        ProfessionalNotes = patient.ProfessionalNotes.Select(MapNoteToDocument).ToList(),
         CreatedAt = patient.CreatedAt,
         UpdatedAt = patient.UpdatedAt
     };
@@ -138,7 +166,28 @@ public sealed class MongoPatientRepository : IPatientRepository
         PregnantOrBreastfeeding = document.PregnantOrBreastfeeding,
         Consent = document.Consent,
         Notes = document.Notes,
+        ProfessionalNotes = (document.ProfessionalNotes ?? []).Select(MapNoteToDomain).ToList(),
         CreatedAt = document.CreatedAt,
         UpdatedAt = document.UpdatedAt
+    };
+
+    private static PatientNoteDocument MapNoteToDocument(PatientNote note) => new()
+    {
+        Id = note.Id,
+        Content = note.Content,
+        ProcedureName = note.ProcedureName,
+        AuthorId = note.AuthorId,
+        AuthorName = note.AuthorName,
+        CreatedAt = note.CreatedAt
+    };
+
+    private static PatientNote MapNoteToDomain(PatientNoteDocument note) => new()
+    {
+        Id = note.Id,
+        Content = note.Content,
+        ProcedureName = note.ProcedureName,
+        AuthorId = note.AuthorId,
+        AuthorName = note.AuthorName,
+        CreatedAt = note.CreatedAt
     };
 }

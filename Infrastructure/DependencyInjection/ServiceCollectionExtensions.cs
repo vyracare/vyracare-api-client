@@ -11,6 +11,8 @@ using Vyracare.Api.Client.Features.Patients.Create;
 using Vyracare.Api.Client.Features.Patients.GetByCpf;
 using Vyracare.Api.Client.Features.Patients.GetById;
 using Vyracare.Api.Client.Features.Patients.List;
+using Vyracare.Api.Client.Features.Patients.Notes;
+using Vyracare.Api.Client.Features.Patients.Update;
 using Vyracare.Api.Client.Features.Patients.Shared.Ports;
 using Vyracare.Api.Client.Infrastructure.Persistence;
 using Vyracare.Api.Client.Infrastructure.Time;
@@ -61,6 +63,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<GetPatientByCpfHandler>();
         services.AddScoped<GetPatientByIdHandler>();
         services.AddScoped<ListPatientsHandler>();
+        services.AddScoped<UpdatePatientHandler>();
+        services.AddScoped<AddPatientNoteHandler>();
+        services.AddScoped<ListPatientNotesHandler>();
 
         return services;
     }

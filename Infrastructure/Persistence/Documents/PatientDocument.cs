@@ -45,6 +45,17 @@ public sealed class PatientDocument
     [BsonElement("pregnantOrBreastfeeding")] public bool PregnantOrBreastfeeding { get; set; }
     [BsonElement("consent")] public bool Consent { get; set; }
     [BsonElement("notes")] public string? Notes { get; set; }
+    [BsonElement("professionalNotes")] public List<PatientNoteDocument> ProfessionalNotes { get; set; } = [];
     [BsonElement("createdAt")] public DateTime CreatedAt { get; set; }
     [BsonElement("updatedAt")] public DateTime UpdatedAt { get; set; }
+}
+
+public sealed class PatientNoteDocument
+{
+    [BsonElement("id")] public string Id { get; set; } = string.Empty;
+    [BsonElement("content")] public string Content { get; set; } = string.Empty;
+    [BsonElement("procedureName")] public string? ProcedureName { get; set; }
+    [BsonElement("authorId")] public string AuthorId { get; set; } = string.Empty;
+    [BsonElement("authorName")] public string AuthorName { get; set; } = string.Empty;
+    [BsonElement("createdAt")] public DateTime CreatedAt { get; set; }
 }

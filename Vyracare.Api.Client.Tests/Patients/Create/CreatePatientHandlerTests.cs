@@ -119,7 +119,11 @@ public sealed class CreatePatientHandlerTests
 /// <summary>
 /// Recupera a coleção de registros disponíveis para a feature.
 /// </summary>
-        public Task<IReadOnlyCollection<Patient>> ListAsync() => Task.FromResult<IReadOnlyCollection<Patient>>(Items);
+        public Task<IReadOnlyCollection<Patient>> ListAsync(string? search = null) => Task.FromResult<IReadOnlyCollection<Patient>>(Items);
+
+        public Task<Patient?> UpdateAsync(Patient patient) => Task.FromResult<Patient?>(patient);
+
+        public Task<PatientNote?> AddNoteAsync(string patientId, PatientNote note) => Task.FromResult<PatientNote?>(note);
     }
 
     private sealed class FixedClock : IClock
