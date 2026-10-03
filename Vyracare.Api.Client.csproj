@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Compile Remove="Vyracare.Api.Client.Tests\**\*.cs" />
+    <Content Remove="Vyracare.Api.Client.Tests\**\*" />
     <EmbeddedResource Remove="Vyracare.Api.Client.Tests\**\*" />
     <None Remove="Vyracare.Api.Client.Tests\**\*" />
   </ItemGroup>

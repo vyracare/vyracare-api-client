@@ -39,10 +39,8 @@ public sealed class UpdatePatientHandler
         patient.BirthDate = request.BirthDate;
         patient.Gender = request.Gender;
         patient.Cpf = normalizedCpf;
-        patient.Rg = request.Rg;
         patient.Email = request.Email.Trim();
         patient.Phone = request.Phone.Trim();
-        patient.Whatsapp = request.Whatsapp;
         patient.AddressStreet = request.AddressStreet;
         patient.AddressNumber = request.AddressNumber;
         patient.AddressComplement = request.AddressComplement;

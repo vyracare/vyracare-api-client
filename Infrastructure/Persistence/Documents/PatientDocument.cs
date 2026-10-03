@@ -6,6 +6,7 @@ namespace Vyracare.Api.Client.Infrastructure.Persistence.Documents;
 /// <summary>
 /// Representa o documento persistido no MongoDB para esta feature.
 /// </summary>
+[BsonIgnoreExtraElements]
 public sealed class PatientDocument
 {
     [BsonId]
@@ -18,10 +19,8 @@ public sealed class PatientDocument
     [BsonElement("birthDate")] public string BirthDate { get; set; } = string.Empty;
     [BsonElement("gender")] public string Gender { get; set; } = string.Empty;
     [BsonElement("cpf")] public string Cpf { get; set; } = string.Empty;
-    [BsonElement("rg")] public string? Rg { get; set; }
     [BsonElement("email")] public string Email { get; set; } = string.Empty;
     [BsonElement("phone")] public string Phone { get; set; } = string.Empty;
-    [BsonElement("whatsapp")] public string? Whatsapp { get; set; }
     [BsonElement("addressStreet")] public string AddressStreet { get; set; } = string.Empty;
     [BsonElement("addressNumber")] public string AddressNumber { get; set; } = string.Empty;
     [BsonElement("addressComplement")] public string? AddressComplement { get; set; }

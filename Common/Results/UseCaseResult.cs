@@ -8,7 +8,8 @@ public enum UseCaseErrorType
     None,
     Validation,
     Conflict,
-    NotFound
+    NotFound,
+    Unavailable
 }
 
 /// <summary>

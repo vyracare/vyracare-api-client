@@ -25,6 +25,7 @@ public static class ControllerBaseExtensions
             UseCaseErrorType.Validation => controller.BadRequest(payload),
             UseCaseErrorType.Conflict => controller.Conflict(payload),
             UseCaseErrorType.NotFound => controller.NotFound(payload),
+            UseCaseErrorType.Unavailable => controller.StatusCode(StatusCodes.Status503ServiceUnavailable, payload),
             _ => controller.BadRequest(payload)
         };
     }

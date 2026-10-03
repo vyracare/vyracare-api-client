@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using Vyracare.Api.Client.Common.Configuration;
 using Vyracare.Api.Client.Common.Time;
 using Vyracare.Api.Client.Features.Employees.Create;
+using Vyracare.Api.Client.Features.Addresses.PostalCode;
 using Vyracare.Api.Client.Features.Employees.GetByEmail;
 using Vyracare.Api.Client.Features.Employees.GetById;
 using Vyracare.Api.Client.Features.Employees.List;
@@ -53,6 +54,8 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IEmployeeRepository, MongoEmployeeRepository>();
         services.AddScoped<IPatientRepository, MongoPatientRepository>();
+        services.AddHttpClient<ICepLookupService, CorreiosCepLookupService>();
+        services.AddScoped<GetPostalCodeHandler>();
 
         services.AddScoped<CreateEmployeeHandler>();
         services.AddScoped<GetEmployeeByEmailHandler>();
