@@ -18,7 +18,29 @@ public sealed class ListPatientNotesHandler
         var patient = await _repository.GetByIdAsync(patientId);
         return patient is null
             ? UseCaseResult<IReadOnlyCollection<PatientNote>>.Failure(UseCaseErrorType.NotFound, "Patient not found")
-            : UseCaseResult<IReadOnlyCollection<PatientNote>>.Success(
-                patient.ProfessionalNotes.OrderByDescending(note => note.CreatedAt).ToArray());
+            : UseCaseResult<IReadOnlyCollection<PatientNote>>.Success(BuildHistory(patient));
+    }
+
+    /// <summary>
+    /// Ordena as notas e inclui a abertura derivada para prontuarios criados antes desse evento existir.
+    /// </summary>
+    private static IReadOnlyCollection<PatientNote> BuildHistory(Patient patient)
+    {
+        var notes = patient.ProfessionalNotes.ToList();
+        if (notes.All(note => note.Kind != PatientNote.RecordOpenedKind))
+        {
+            notes.Add(new PatientNote
+            {
+                Id = $"record-opened-{patient.Id}",
+                Content = "Prontuário aberto com o cadastro inicial do paciente.",
+                ProcedureName = "Abertura do prontuário",
+                Kind = PatientNote.RecordOpenedKind,
+                AuthorId = "system",
+                AuthorName = "Sistema Vyracare",
+                CreatedAt = patient.CreatedAt
+            });
+        }
+
+        return notes.OrderByDescending(note => note.CreatedAt).ToArray();
     }
 }

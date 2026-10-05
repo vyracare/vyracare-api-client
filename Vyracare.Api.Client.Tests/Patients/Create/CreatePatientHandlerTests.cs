@@ -34,10 +34,15 @@ public sealed class CreatePatientHandlerTests
         var repository = new FakePatientRepository(false);
         var handler = new CreatePatientHandler(repository, new FixedClock());
 
-        var result = await handler.HandleAsync(BuildRequest());
+        var result = await handler.HandleAsync(BuildRequest(), "employee-1", "Ana Profissional");
 
         Assert.True(result.IsSuccess);
         Assert.Single(repository.Items);
+        var openingNote = Assert.Single(repository.Items[0].ProfessionalNotes);
+        Assert.Equal(PatientNote.RecordOpenedKind, openingNote.Kind);
+        Assert.Equal("employee-1", openingNote.AuthorId);
+        Assert.Equal("Ana Profissional", openingNote.AuthorName);
+        Assert.Equal(new FixedClock().UtcNow, openingNote.CreatedAt);
     }
 
     private static CreatePatientRequest BuildRequest() => new(

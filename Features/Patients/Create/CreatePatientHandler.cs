@@ -25,7 +25,10 @@ public sealed class CreatePatientHandler
 /// <summary>
 /// Executa o caso de uso e devolve o resultado padronizado da operação.
 /// </summary>
-    public async Task<UseCaseResult<Patient>> HandleAsync(CreatePatientRequest request)
+    public async Task<UseCaseResult<Patient>> HandleAsync(
+        CreatePatientRequest request,
+        string authorId = "system",
+        string authorName = "Sistema Vyracare")
     {
         if (string.IsNullOrWhiteSpace(request.FullName) || string.IsNullOrWhiteSpace(request.Cpf))
         {
@@ -69,6 +72,10 @@ public sealed class CreatePatientHandler
             PregnantOrBreastfeeding = request.PregnantOrBreastfeeding,
             Consent = request.Consent,
             Notes = request.Notes,
+            ProfessionalNotes =
+            [
+                BuildRecordOpenedNote(timestamp, authorId, authorName)
+            ],
             CreatedAt = timestamp,
             UpdatedAt = timestamp
         };
@@ -76,4 +83,17 @@ public sealed class CreatePatientHandler
         var created = await _repository.AddAsync(patient);
         return UseCaseResult<Patient>.Success(created);
     }
+
+    /// <summary>
+    /// Cria o primeiro evento do historico com a identidade de quem abriu o prontuario.
+    /// </summary>
+    private static PatientNote BuildRecordOpenedNote(DateTime timestamp, string authorId, string authorName) => new()
+    {
+        Content = "Prontuário aberto com o cadastro inicial do paciente.",
+        ProcedureName = "Abertura do prontuário",
+        Kind = PatientNote.RecordOpenedKind,
+        AuthorId = string.IsNullOrWhiteSpace(authorId) ? "system" : authorId,
+        AuthorName = string.IsNullOrWhiteSpace(authorName) ? "Sistema Vyracare" : authorName,
+        CreatedAt = timestamp
+    };
 }

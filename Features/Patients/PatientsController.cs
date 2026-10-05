@@ -54,7 +54,9 @@ public sealed class PatientsController : ControllerBase
 /// </summary>
     public async Task<IActionResult> Create([FromBody] CreatePatientRequest request, [FromServices] CreatePatientHandler handler)
     {
-        var result = await handler.HandleAsync(request);
+        var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub") ?? "system";
+        var authorName = User.FindFirstValue(ClaimTypes.Name) ?? User.FindFirstValue("name") ?? User.FindFirstValue(ClaimTypes.Email) ?? "Sistema Vyracare";
+        var result = await handler.HandleAsync(request, authorId, authorName);
         return this.ToActionResult(result, value => CreatedAtAction(nameof(GetById), new { id = value.Id }, value));
     }
 

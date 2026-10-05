@@ -31,6 +31,7 @@ public sealed class AddPatientNoteHandler
         {
             Content = request.Content.Trim(),
             ProcedureName = request.ProcedureName?.Trim(),
+            Kind = PatientNote.ProfessionalNoteKind,
             AuthorId = authorId,
             AuthorName = string.IsNullOrWhiteSpace(authorName) ? "Funcionario" : authorName,
             CreatedAt = _clock.UtcNow
