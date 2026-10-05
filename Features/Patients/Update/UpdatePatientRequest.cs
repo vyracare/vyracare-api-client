@@ -4,7 +4,6 @@ public sealed record UpdatePatientRequest(
     string FullName,
     string BirthDate,
     string Gender,
-    string Cpf,
     string Email,
     string Phone,
     string AddressStreet,
@@ -23,11 +22,8 @@ public sealed record UpdatePatientRequest(
     string? Medications,
     string? PreviousSurgeries,
     string? AestheticProcedures,
-    string? SkinType,
     string? SunExposure,
     bool Smoking,
     bool Alcohol,
-    bool PregnantOrBreastfeeding,
-    bool Consent,
-    string? Notes
+    bool PregnantOrBreastfeeding
 );

@@ -18,9 +18,9 @@ public sealed class UpdatePatientHandler
 
     public async Task<UseCaseResult<Patient>> HandleAsync(string id, UpdatePatientRequest request)
     {
-        if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(request.FullName) || string.IsNullOrWhiteSpace(request.Cpf))
+        if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(request.FullName))
         {
-            return UseCaseResult<Patient>.Failure(UseCaseErrorType.Validation, "Id, FullName and Cpf are required");
+            return UseCaseResult<Patient>.Failure(UseCaseErrorType.Validation, "Id and FullName are required");
         }
 
         var patient = await _repository.GetByIdAsync(id);
@@ -29,16 +29,9 @@ public sealed class UpdatePatientHandler
             return UseCaseResult<Patient>.Failure(UseCaseErrorType.NotFound, "Patient not found");
         }
 
-        var normalizedCpf = request.Cpf.Trim();
-        if (!string.Equals(patient.Cpf, normalizedCpf, StringComparison.Ordinal) && await _repository.ExistsByCpfAsync(normalizedCpf))
-        {
-            return UseCaseResult<Patient>.Failure(UseCaseErrorType.Conflict, "Ja existe um paciente cadastrado com este CPF.");
-        }
-
         patient.FullName = request.FullName.Trim();
         patient.BirthDate = request.BirthDate;
         patient.Gender = request.Gender;
-        patient.Cpf = normalizedCpf;
         patient.Email = request.Email.Trim();
         patient.Phone = request.Phone.Trim();
         patient.AddressStreet = request.AddressStreet;
@@ -57,13 +50,10 @@ public sealed class UpdatePatientHandler
         patient.Medications = request.Medications;
         patient.PreviousSurgeries = request.PreviousSurgeries;
         patient.AestheticProcedures = request.AestheticProcedures;
-        patient.SkinType = request.SkinType;
         patient.SunExposure = request.SunExposure;
         patient.Smoking = request.Smoking;
         patient.Alcohol = request.Alcohol;
         patient.PregnantOrBreastfeeding = request.PregnantOrBreastfeeding;
-        patient.Consent = request.Consent;
-        patient.Notes = request.Notes;
         patient.UpdatedAt = _clock.UtcNow;
 
         var updated = await _repository.UpdateAsync(patient);
