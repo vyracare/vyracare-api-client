@@ -42,6 +42,7 @@ public sealed class CreatePatientHandlerTests
         Assert.Equal(PatientNote.RecordOpenedKind, openingNote.Kind);
         Assert.Equal("employee-1", openingNote.AuthorId);
         Assert.Equal("Ana Profissional", openingNote.AuthorName);
+        Assert.Equal("Nota registrada na abertura", openingNote.Content);
         Assert.Equal(new FixedClock().UtcNow, openingNote.CreatedAt);
     }
 
@@ -74,7 +75,7 @@ public sealed class CreatePatientHandlerTests
         false,
         false,
         true,
-        null
+        "  Nota registrada na abertura  "
     );
 
     private sealed class FakePatientRepository : IPatientRepository

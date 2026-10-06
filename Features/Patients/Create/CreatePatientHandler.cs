@@ -74,7 +74,7 @@ public sealed class CreatePatientHandler
             Notes = request.Notes,
             ProfessionalNotes =
             [
-                BuildRecordOpenedNote(timestamp, authorId, authorName)
+                BuildRecordOpenedNote(timestamp, authorId, authorName, request.Notes)
             ],
             CreatedAt = timestamp,
             UpdatedAt = timestamp
@@ -85,15 +85,27 @@ public sealed class CreatePatientHandler
     }
 
     /// <summary>
-    /// Cria o primeiro evento do historico com a identidade de quem abriu o prontuario.
+    /// Cria o primeiro evento do historico com a nota e a identidade de quem abriu o prontuario.
     /// </summary>
-    private static PatientNote BuildRecordOpenedNote(DateTime timestamp, string authorId, string authorName) => new()
+    private static PatientNote BuildRecordOpenedNote(
+        DateTime timestamp,
+        string authorId,
+        string authorName,
+        string? openingContent) => new()
     {
-        Content = "Prontuário aberto com o cadastro inicial do paciente.",
+        Content = ResolveOpeningContent(openingContent),
         ProcedureName = "Abertura do prontuário",
         Kind = PatientNote.RecordOpenedKind,
         AuthorId = string.IsNullOrWhiteSpace(authorId) ? "system" : authorId,
         AuthorName = string.IsNullOrWhiteSpace(authorName) ? "Sistema Vyracare" : authorName,
         CreatedAt = timestamp
     };
+
+    /// <summary>
+    /// Normaliza a nota inicial exibida no historico profissional.
+    /// </summary>
+    private static string ResolveOpeningContent(string? content) =>
+        string.IsNullOrWhiteSpace(content)
+            ? "Nenhuma nota registrada na abertura do prontuário."
+            : content.Trim();
 }

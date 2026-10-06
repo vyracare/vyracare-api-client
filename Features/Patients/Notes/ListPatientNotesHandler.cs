@@ -27,12 +27,13 @@ public sealed class ListPatientNotesHandler
     private static IReadOnlyCollection<PatientNote> BuildHistory(Patient patient)
     {
         var notes = patient.ProfessionalNotes.ToList();
-        if (notes.All(note => note.Kind != PatientNote.RecordOpenedKind))
+        var openingNote = notes.FirstOrDefault(note => note.Kind == PatientNote.RecordOpenedKind);
+        if (openingNote is null)
         {
             notes.Add(new PatientNote
             {
                 Id = $"record-opened-{patient.Id}",
-                Content = "Prontuário aberto com o cadastro inicial do paciente.",
+                Content = ResolveOpeningContent(patient.Notes),
                 ProcedureName = "Abertura do prontuário",
                 Kind = PatientNote.RecordOpenedKind,
                 AuthorId = "system",
@@ -40,7 +41,19 @@ public sealed class ListPatientNotesHandler
                 CreatedAt = patient.CreatedAt
             });
         }
+        else if (!string.IsNullOrWhiteSpace(patient.Notes))
+        {
+            openingNote.Content = patient.Notes.Trim();
+        }
 
         return notes.OrderByDescending(note => note.CreatedAt).ToArray();
     }
+
+    /// <summary>
+    /// Normaliza a nota inicial usada na abertura derivada de prontuarios antigos.
+    /// </summary>
+    private static string ResolveOpeningContent(string? content) =>
+        string.IsNullOrWhiteSpace(content)
+            ? "Nenhuma nota registrada na abertura do prontuário."
+            : content.Trim();
 }

@@ -15,6 +15,7 @@ public sealed class ListPatientNotesHandlerTests
         Assert.True(result.IsSuccess);
         var openingNote = Assert.Single(result.Value!);
         Assert.Equal(PatientNote.RecordOpenedKind, openingNote.Kind);
+        Assert.Equal("Nota inicial do paciente", openingNote.Content);
         Assert.Equal(patient.CreatedAt, openingNote.CreatedAt);
         Assert.Equal("Sistema Vyracare", openingNote.AuthorName);
     }
@@ -33,13 +34,15 @@ public sealed class ListPatientNotesHandlerTests
         var result = await new ListPatientNotesHandler(new FakePatientRepository(patient)).HandleAsync(patient.Id!);
 
         Assert.True(result.IsSuccess);
-        Assert.Single(result.Value!);
+        var openingNote = Assert.Single(result.Value!);
+        Assert.Equal("Nota inicial do paciente", openingNote.Content);
     }
 
     private static Patient BuildPatient() => new()
     {
         Id = "patient-1",
         FullName = "Paciente",
+        Notes = "  Nota inicial do paciente  ",
         CreatedAt = new DateTime(2026, 10, 5, 12, 0, 0, DateTimeKind.Utc),
         UpdatedAt = new DateTime(2026, 10, 5, 12, 0, 0, DateTimeKind.Utc)
     };
