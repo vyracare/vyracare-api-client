@@ -34,10 +34,16 @@ public sealed class CreatePatientHandlerTests
         var repository = new FakePatientRepository(false);
         var handler = new CreatePatientHandler(repository, new FixedClock());
 
-        var result = await handler.HandleAsync(BuildRequest());
+        var result = await handler.HandleAsync(BuildRequest(), "employee-1", "Ana Profissional");
 
         Assert.True(result.IsSuccess);
         Assert.Single(repository.Items);
+        var openingNote = Assert.Single(repository.Items[0].ProfessionalNotes);
+        Assert.Equal(PatientNote.RecordOpenedKind, openingNote.Kind);
+        Assert.Equal("employee-1", openingNote.AuthorId);
+        Assert.Equal("Ana Profissional", openingNote.AuthorName);
+        Assert.Equal("Nota registrada na abertura", openingNote.Content);
+        Assert.Equal(new FixedClock().UtcNow, openingNote.CreatedAt);
     }
 
     private static CreatePatientRequest BuildRequest() => new(
@@ -45,10 +51,8 @@ public sealed class CreatePatientHandlerTests
         "1990-01-01",
         "Feminino",
         "12345678900",
-        null,
         "paciente@vyracare.com",
         "11999999999",
-        null,
         "Rua A",
         "100",
         null,
@@ -71,7 +75,7 @@ public sealed class CreatePatientHandlerTests
         false,
         false,
         true,
-        null
+        "  Nota registrada na abertura  "
     );
 
     private sealed class FakePatientRepository : IPatientRepository
@@ -119,7 +123,11 @@ public sealed class CreatePatientHandlerTests
 /// <summary>
 /// Recupera a coleção de registros disponíveis para a feature.
 /// </summary>
-        public Task<IReadOnlyCollection<Patient>> ListAsync() => Task.FromResult<IReadOnlyCollection<Patient>>(Items);
+        public Task<IReadOnlyCollection<Patient>> ListAsync(string? search = null) => Task.FromResult<IReadOnlyCollection<Patient>>(Items);
+
+        public Task<Patient?> UpdateAsync(Patient patient) => Task.FromResult<Patient?>(patient);
+
+        public Task<PatientNote?> AddNoteAsync(string patientId, PatientNote note) => Task.FromResult<PatientNote?>(note);
     }
 
     private sealed class FixedClock : IClock

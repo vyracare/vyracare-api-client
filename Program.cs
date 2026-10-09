@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Vyracare.Api.Client.Common.Configuration;
 using Vyracare.Api.Client.Infrastructure;
 using Vyracare.Api.Client.Infrastructure.DependencyInjection;
+using Vyracare.Api.Client.Common.Tenancy;
 
 var builder = WebApplication.CreateBuilder(args);
 await ParameterStoreBootstrapper.ApplyAsync(builder.Configuration);
@@ -14,6 +15,7 @@ var configuration = builder.Configuration;
 builder.Services.Configure<MongoOptions>(configuration.GetSection(MongoOptions.SectionName));
 builder.Services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
 builder.Services.Configure<CorsOptions>(configuration.GetSection(CorsOptions.SectionName));
+builder.Services.Configure<CorreiosOptions>(configuration.GetSection(CorreiosOptions.SectionName));
 
 builder.Services.AddMongo();
 builder.Services.AddClientCore();
@@ -112,6 +114,7 @@ app.UseSwaggerUI(options =>
 app.UseHttpsRedirection();
 app.UseCors("DefaultCors");
 app.UseAuthentication();
+app.UseMiddleware<TenantContextMiddleware>();
 app.UseAuthorization();
 app.MapGet("/health", () => Results.Ok(new
 {

@@ -2,6 +2,7 @@ using MongoDB.Driver;
 using Vyracare.Api.Client.Features.Employees.Shared.Domain;
 using Vyracare.Api.Client.Features.Employees.Shared.Ports;
 using Vyracare.Api.Client.Infrastructure.Persistence.Documents;
+using Vyracare.Api.Client.Common.Tenancy;
 
 namespace Vyracare.Api.Client.Infrastructure.Persistence;
 
@@ -11,13 +12,15 @@ namespace Vyracare.Api.Client.Infrastructure.Persistence;
 public sealed class MongoEmployeeRepository : IEmployeeRepository
 {
     private readonly IMongoCollection<EmployeeDocument> _collection;
+    private readonly string _tenantId;
 
 /// <summary>
 /// Inicializa uma nova instância de MongoEmployeeRepository.
 /// </summary>
-    public MongoEmployeeRepository(IMongoDatabase database)
+    public MongoEmployeeRepository(IMongoDatabase database, ITenantContext tenantContext)
     {
         _collection = database.GetCollection<EmployeeDocument>("employees");
+        _tenantId = tenantContext.TenantId;
     }
 
 /// <summary>
@@ -25,7 +28,7 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
 /// </summary>
     public async Task<IReadOnlyCollection<Employee>> ListAsync()
     {
-        var documents = await _collection.Find(Builders<EmployeeDocument>.Filter.Empty).ToListAsync();
+        var documents = await _collection.Find(item => item.TenantId == _tenantId).ToListAsync();
         return documents.Select(MapToDomain).ToArray();
     }
 
@@ -34,7 +37,7 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
 /// </summary>
     public async Task<Employee?> GetByIdAsync(string id)
     {
-        var document = await _collection.Find(item => item.Id == id).FirstOrDefaultAsync();
+        var document = await _collection.Find(item => item.TenantId == _tenantId && item.Id == id).FirstOrDefaultAsync();
         return document is null ? null : MapToDomain(document);
     }
 
@@ -43,7 +46,7 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
 /// </summary>
     public async Task<Employee?> GetByEmailAsync(string email)
     {
-        var document = await _collection.Find(item => item.Email == email).FirstOrDefaultAsync();
+        var document = await _collection.Find(item => item.TenantId == _tenantId && item.Email == email).FirstOrDefaultAsync();
         return document is null ? null : MapToDomain(document);
     }
 
@@ -52,7 +55,7 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
 /// </summary>
     public async Task<bool> ExistsByEmailAsync(string email)
     {
-        return await _collection.Find(item => item.Email == email).AnyAsync();
+        return await _collection.Find(item => item.TenantId == _tenantId && item.Email == email).AnyAsync();
     }
 
 /// <summary>
@@ -66,8 +69,9 @@ public sealed class MongoEmployeeRepository : IEmployeeRepository
         return employee;
     }
 
-    private static EmployeeDocument MapToDocument(Employee employee) => new()
+    private EmployeeDocument MapToDocument(Employee employee) => new()
     {
+        TenantId = _tenantId,
         Id = employee.Id,
         FullName = employee.FullName,
         Email = employee.Email,

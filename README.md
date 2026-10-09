@@ -11,6 +11,11 @@ Hoje ela tem dois dominios principais:
 
 O projeto usa `vertical slice`, entao cada caso de uso fica agrupado por feature.
 
+Runtime atual da aplicacao:
+
+- `TargetFramework`: `net10.0`
+- runtime AWS Lambda: `dotnet10`
+
 ---
 
 ## Como ler este projeto pela primeira vez

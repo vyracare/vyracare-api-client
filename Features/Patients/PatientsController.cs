@@ -1,9 +1,13 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Vyracare.Api.Client.Common.Http;
 using Vyracare.Api.Client.Features.Patients.Create;
 using Vyracare.Api.Client.Features.Patients.GetByCpf;
 using Vyracare.Api.Client.Features.Patients.GetById;
 using Vyracare.Api.Client.Features.Patients.List;
+using Vyracare.Api.Client.Features.Patients.Notes;
+using Vyracare.Api.Client.Features.Patients.Update;
 
 namespace Vyracare.Api.Client.Features.Patients;
 
@@ -18,9 +22,9 @@ public sealed class PatientsController : ControllerBase
 /// <summary>
 /// Executa a responsabilidade do método G et Al l.
 /// </summary>
-    public async Task<IActionResult> GetAll([FromServices] ListPatientsHandler handler)
+    public async Task<IActionResult> GetAll([FromQuery] string? search, [FromServices] ListPatientsHandler handler)
     {
-        var result = await handler.HandleAsync();
+        var result = await handler.HandleAsync(search);
         return this.ToActionResult(result, Ok);
     }
 
@@ -50,7 +54,33 @@ public sealed class PatientsController : ControllerBase
 /// </summary>
     public async Task<IActionResult> Create([FromBody] CreatePatientRequest request, [FromServices] CreatePatientHandler handler)
     {
-        var result = await handler.HandleAsync(request);
+        var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub") ?? "system";
+        var authorName = User.FindFirstValue(ClaimTypes.Name) ?? User.FindFirstValue("name") ?? User.FindFirstValue(ClaimTypes.Email) ?? "Sistema Vyracare";
+        var result = await handler.HandleAsync(request, authorId, authorName);
         return this.ToActionResult(result, value => CreatedAtAction(nameof(GetById), new { id = value.Id }, value));
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = "Administrador")]
+    public async Task<IActionResult> Update(string id, [FromBody] UpdatePatientRequest request, [FromServices] UpdatePatientHandler handler)
+    {
+        var result = await handler.HandleAsync(id, request);
+        return this.ToActionResult(result, Ok);
+    }
+
+    [HttpGet("{id}/notes")]
+    public async Task<IActionResult> GetNotes(string id, [FromServices] ListPatientNotesHandler handler)
+    {
+        var result = await handler.HandleAsync(id);
+        return this.ToActionResult(result, Ok);
+    }
+
+    [HttpPost("{id}/notes")]
+    public async Task<IActionResult> AddNote(string id, [FromBody] AddPatientNoteRequest request, [FromServices] AddPatientNoteHandler handler)
+    {
+        var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub") ?? "unknown";
+        var authorName = User.FindFirstValue(ClaimTypes.Name) ?? User.FindFirstValue("name") ?? User.FindFirstValue(ClaimTypes.Email) ?? "Funcionario";
+        var result = await handler.HandleAsync(id, request, authorId, authorName);
+        return this.ToActionResult(result, value => CreatedAtAction(nameof(GetNotes), new { id }, value));
     }
 }
