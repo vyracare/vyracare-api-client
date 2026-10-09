@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using Vyracare.Api.Client.Common.Configuration;
 using Vyracare.Api.Client.Common.Time;
 using Vyracare.Api.Client.Features.Employees.Create;
+using Vyracare.Api.Client.Features.Addresses.PostalCode;
 using Vyracare.Api.Client.Features.Employees.GetByEmail;
 using Vyracare.Api.Client.Features.Employees.GetById;
 using Vyracare.Api.Client.Features.Employees.List;
@@ -11,9 +12,12 @@ using Vyracare.Api.Client.Features.Patients.Create;
 using Vyracare.Api.Client.Features.Patients.GetByCpf;
 using Vyracare.Api.Client.Features.Patients.GetById;
 using Vyracare.Api.Client.Features.Patients.List;
+using Vyracare.Api.Client.Features.Patients.Notes;
+using Vyracare.Api.Client.Features.Patients.Update;
 using Vyracare.Api.Client.Features.Patients.Shared.Ports;
 using Vyracare.Api.Client.Infrastructure.Persistence;
 using Vyracare.Api.Client.Infrastructure.Time;
+using Vyracare.Api.Client.Common.Tenancy;
 
 namespace Vyracare.Api.Client.Infrastructure.DependencyInjection;
 
@@ -48,9 +52,14 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddClientCore(this IServiceCollection services)
     {
         services.AddSingleton<IClock, SystemClock>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<ITenantContext, HttpTenantContext>();
 
         services.AddScoped<IEmployeeRepository, MongoEmployeeRepository>();
         services.AddScoped<IPatientRepository, MongoPatientRepository>();
+        services.AddHostedService<MongoTenantIndexInitializer>();
+        services.AddHttpClient<ICepLookupService, CorreiosCepLookupService>();
+        services.AddScoped<GetPostalCodeHandler>();
 
         services.AddScoped<CreateEmployeeHandler>();
         services.AddScoped<GetEmployeeByEmailHandler>();
@@ -61,6 +70,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<GetPatientByCpfHandler>();
         services.AddScoped<GetPatientByIdHandler>();
         services.AddScoped<ListPatientsHandler>();
+        services.AddScoped<UpdatePatientHandler>();
+        services.AddScoped<AddPatientNoteHandler>();
+        services.AddScoped<ListPatientNotesHandler>();
 
         return services;
     }

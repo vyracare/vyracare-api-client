@@ -28,7 +28,6 @@ public sealed class Patient
 /// <summary>
 /// Obtém ou define o valor da propriedade R g.
 /// </summary>
-    public string? Rg { get; set; }
 /// <summary>
 /// Obtém ou define o e-mail associado ao registro.
 /// </summary>
@@ -40,7 +39,6 @@ public sealed class Patient
 /// <summary>
 /// Obtém ou define o valor da propriedade W ha ts ap p.
 /// </summary>
-    public string? Whatsapp { get; set; }
 /// <summary>
 /// Obtém ou define o valor da propriedade A dd re ss St re et.
 /// </summary>
@@ -133,6 +131,7 @@ public sealed class Patient
 /// Obtém ou define as observações associadas ao registro.
 /// </summary>
     public string? Notes { get; set; }
+    public List<PatientNote> ProfessionalNotes { get; set; } = [];
 /// <summary>
 /// Obtém ou define a data de criação do registro.
 /// </summary>

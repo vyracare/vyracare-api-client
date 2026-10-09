@@ -7,9 +7,11 @@ namespace Vyracare.Api.Client.Features.Patients.Shared.Ports;
 /// </summary>
 public interface IPatientRepository
 {
-    Task<IReadOnlyCollection<Patient>> ListAsync();
+    Task<IReadOnlyCollection<Patient>> ListAsync(string? search = null);
     Task<Patient?> GetByIdAsync(string id);
     Task<Patient?> GetByCpfAsync(string cpf);
     Task<bool> ExistsByCpfAsync(string cpf);
     Task<Patient> AddAsync(Patient patient);
+    Task<Patient?> UpdateAsync(Patient patient);
+    Task<PatientNote?> AddNoteAsync(string patientId, PatientNote note);
 }

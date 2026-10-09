@@ -25,7 +25,10 @@ public sealed class CreatePatientHandler
 /// <summary>
 /// Executa o caso de uso e devolve o resultado padronizado da operação.
 /// </summary>
-    public async Task<UseCaseResult<Patient>> HandleAsync(CreatePatientRequest request)
+    public async Task<UseCaseResult<Patient>> HandleAsync(
+        CreatePatientRequest request,
+        string authorId = "system",
+        string authorName = "Sistema Vyracare")
     {
         if (string.IsNullOrWhiteSpace(request.FullName) || string.IsNullOrWhiteSpace(request.Cpf))
         {
@@ -44,10 +47,8 @@ public sealed class CreatePatientHandler
             BirthDate = request.BirthDate,
             Gender = request.Gender,
             Cpf = request.Cpf.Trim(),
-            Rg = request.Rg,
             Email = request.Email,
             Phone = request.Phone,
-            Whatsapp = request.Whatsapp,
             AddressStreet = request.AddressStreet,
             AddressNumber = request.AddressNumber,
             AddressComplement = request.AddressComplement,
@@ -71,6 +72,10 @@ public sealed class CreatePatientHandler
             PregnantOrBreastfeeding = request.PregnantOrBreastfeeding,
             Consent = request.Consent,
             Notes = request.Notes,
+            ProfessionalNotes =
+            [
+                BuildRecordOpenedNote(timestamp, authorId, authorName, request.Notes)
+            ],
             CreatedAt = timestamp,
             UpdatedAt = timestamp
         };
@@ -78,4 +83,29 @@ public sealed class CreatePatientHandler
         var created = await _repository.AddAsync(patient);
         return UseCaseResult<Patient>.Success(created);
     }
+
+    /// <summary>
+    /// Cria o primeiro evento do historico com a nota e a identidade de quem abriu o prontuario.
+    /// </summary>
+    private static PatientNote BuildRecordOpenedNote(
+        DateTime timestamp,
+        string authorId,
+        string authorName,
+        string? openingContent) => new()
+    {
+        Content = ResolveOpeningContent(openingContent),
+        ProcedureName = "Abertura do prontuário",
+        Kind = PatientNote.RecordOpenedKind,
+        AuthorId = string.IsNullOrWhiteSpace(authorId) ? "system" : authorId,
+        AuthorName = string.IsNullOrWhiteSpace(authorName) ? "Sistema Vyracare" : authorName,
+        CreatedAt = timestamp
+    };
+
+    /// <summary>
+    /// Normaliza a nota inicial exibida no historico profissional.
+    /// </summary>
+    private static string ResolveOpeningContent(string? content) =>
+        string.IsNullOrWhiteSpace(content)
+            ? "Nenhuma nota registrada na abertura do prontuário."
+            : content.Trim();
 }

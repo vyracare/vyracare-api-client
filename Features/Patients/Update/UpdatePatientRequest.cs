@@ -1,13 +1,9 @@
-namespace Vyracare.Api.Client.Features.Patients.Create;
+namespace Vyracare.Api.Client.Features.Patients.Update;
 
-/// <summary>
-/// Define o contrato de entrada ou saída usado por esta feature.
-/// </summary>
-public sealed record CreatePatientRequest(
+public sealed record UpdatePatientRequest(
     string FullName,
     string BirthDate,
     string Gender,
-    string Cpf,
     string Email,
     string Phone,
     string AddressStreet,
@@ -26,11 +22,8 @@ public sealed record CreatePatientRequest(
     string? Medications,
     string? PreviousSurgeries,
     string? AestheticProcedures,
-    string? SkinType,
     string? SunExposure,
     bool Smoking,
     bool Alcohol,
-    bool PregnantOrBreastfeeding,
-    bool Consent,
-    string? Notes
+    bool PregnantOrBreastfeeding
 );

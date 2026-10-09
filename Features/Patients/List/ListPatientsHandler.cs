@@ -22,9 +22,9 @@ public sealed class ListPatientsHandler
 /// <summary>
 /// Executa o caso de uso e devolve o resultado padronizado da operação.
 /// </summary>
-    public async Task<UseCaseResult<IReadOnlyCollection<Patient>>> HandleAsync()
+    public async Task<UseCaseResult<IReadOnlyCollection<Patient>>> HandleAsync(string? search = null)
     {
-        var patients = await _repository.ListAsync();
+        var patients = await _repository.ListAsync(search?.Trim());
         return UseCaseResult<IReadOnlyCollection<Patient>>.Success(patients);
     }
 }

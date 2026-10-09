@@ -8,6 +8,8 @@ namespace Vyracare.Api.Client.Infrastructure.Persistence.Documents;
 /// </summary>
 public sealed class EmployeeDocument
 {
+    [BsonElement("tenantId")]
+    public string TenantId { get; set; } = string.Empty;
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
 /// <summary>

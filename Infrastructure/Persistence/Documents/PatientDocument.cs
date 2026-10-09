@@ -6,8 +6,10 @@ namespace Vyracare.Api.Client.Infrastructure.Persistence.Documents;
 /// <summary>
 /// Representa o documento persistido no MongoDB para esta feature.
 /// </summary>
+[BsonIgnoreExtraElements]
 public sealed class PatientDocument
 {
+    [BsonElement("tenantId")] public string TenantId { get; set; } = string.Empty;
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
 /// <summary>
@@ -18,10 +20,8 @@ public sealed class PatientDocument
     [BsonElement("birthDate")] public string BirthDate { get; set; } = string.Empty;
     [BsonElement("gender")] public string Gender { get; set; } = string.Empty;
     [BsonElement("cpf")] public string Cpf { get; set; } = string.Empty;
-    [BsonElement("rg")] public string? Rg { get; set; }
     [BsonElement("email")] public string Email { get; set; } = string.Empty;
     [BsonElement("phone")] public string Phone { get; set; } = string.Empty;
-    [BsonElement("whatsapp")] public string? Whatsapp { get; set; }
     [BsonElement("addressStreet")] public string AddressStreet { get; set; } = string.Empty;
     [BsonElement("addressNumber")] public string AddressNumber { get; set; } = string.Empty;
     [BsonElement("addressComplement")] public string? AddressComplement { get; set; }
@@ -45,6 +45,17 @@ public sealed class PatientDocument
     [BsonElement("pregnantOrBreastfeeding")] public bool PregnantOrBreastfeeding { get; set; }
     [BsonElement("consent")] public bool Consent { get; set; }
     [BsonElement("notes")] public string? Notes { get; set; }
+    [BsonElement("professionalNotes")] public List<PatientNoteDocument> ProfessionalNotes { get; set; } = [];
     [BsonElement("createdAt")] public DateTime CreatedAt { get; set; }
     [BsonElement("updatedAt")] public DateTime UpdatedAt { get; set; }
+}
+
+public sealed class PatientNoteDocument
+{
+    [BsonElement("id")] public string Id { get; set; } = string.Empty;
+    [BsonElement("content")] public string Content { get; set; } = string.Empty;
+    [BsonElement("procedureName")] public string? ProcedureName { get; set; }
+    [BsonElement("authorId")] public string AuthorId { get; set; } = string.Empty;
+    [BsonElement("authorName")] public string AuthorName { get; set; } = string.Empty;
+    [BsonElement("createdAt")] public DateTime CreatedAt { get; set; }
 }
