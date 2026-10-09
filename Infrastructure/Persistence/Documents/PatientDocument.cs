@@ -9,6 +9,7 @@ namespace Vyracare.Api.Client.Infrastructure.Persistence.Documents;
 [BsonIgnoreExtraElements]
 public sealed class PatientDocument
 {
+    [BsonElement("tenantId")] public string TenantId { get; set; } = string.Empty;
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
 /// <summary>

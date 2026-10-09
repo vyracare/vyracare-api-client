@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Vyracare.Api.Client.Common.Configuration;
 using Vyracare.Api.Client.Infrastructure;
 using Vyracare.Api.Client.Infrastructure.DependencyInjection;
+using Vyracare.Api.Client.Common.Tenancy;
 
 var builder = WebApplication.CreateBuilder(args);
 await ParameterStoreBootstrapper.ApplyAsync(builder.Configuration);
@@ -113,6 +114,7 @@ app.UseSwaggerUI(options =>
 app.UseHttpsRedirection();
 app.UseCors("DefaultCors");
 app.UseAuthentication();
+app.UseMiddleware<TenantContextMiddleware>();
 app.UseAuthorization();
 app.MapControllers().RequireAuthorization();
 

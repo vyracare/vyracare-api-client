@@ -2,6 +2,7 @@ using MongoDB.Driver;
 using Vyracare.Api.Client.Features.Patients.Shared.Domain;
 using Vyracare.Api.Client.Features.Patients.Shared.Ports;
 using Vyracare.Api.Client.Infrastructure.Persistence.Documents;
+using Vyracare.Api.Client.Common.Tenancy;
 
 namespace Vyracare.Api.Client.Infrastructure.Persistence;
 
@@ -11,13 +12,15 @@ namespace Vyracare.Api.Client.Infrastructure.Persistence;
 public sealed class MongoPatientRepository : IPatientRepository
 {
     private readonly IMongoCollection<PatientDocument> _collection;
+    private readonly string _tenantId;
 
 /// <summary>
 /// Inicializa uma nova instância de MongoPatientRepository.
 /// </summary>
-    public MongoPatientRepository(IMongoDatabase database)
+    public MongoPatientRepository(IMongoDatabase database, ITenantContext tenantContext)
     {
         _collection = database.GetCollection<PatientDocument>("patients");
+        _tenantId = tenantContext.TenantId;
     }
 
 /// <summary>
@@ -25,11 +28,11 @@ public sealed class MongoPatientRepository : IPatientRepository
 /// </summary>
     public async Task<IReadOnlyCollection<Patient>> ListAsync(string? search = null)
     {
-        var filter = Builders<PatientDocument>.Filter.Empty;
+        var filter = Builders<PatientDocument>.Filter.Eq(item => item.TenantId, _tenantId);
         if (!string.IsNullOrWhiteSpace(search))
         {
             var pattern = new MongoDB.Bson.BsonRegularExpression(System.Text.RegularExpressions.Regex.Escape(search), "i");
-            filter = Builders<PatientDocument>.Filter.Or(
+            filter &= Builders<PatientDocument>.Filter.Or(
                 Builders<PatientDocument>.Filter.Regex(item => item.FullName, pattern),
                 Builders<PatientDocument>.Filter.Regex(item => item.Phone, pattern),
                 Builders<PatientDocument>.Filter.Regex(item => item.Email, pattern));
@@ -44,7 +47,7 @@ public sealed class MongoPatientRepository : IPatientRepository
 /// </summary>
     public async Task<Patient?> GetByIdAsync(string id)
     {
-        var document = await _collection.Find(item => item.Id == id).FirstOrDefaultAsync();
+        var document = await _collection.Find(item => item.TenantId == _tenantId && item.Id == id).FirstOrDefaultAsync();
         return document is null ? null : MapToDomain(document);
     }
 
@@ -53,7 +56,7 @@ public sealed class MongoPatientRepository : IPatientRepository
 /// </summary>
     public async Task<Patient?> GetByCpfAsync(string cpf)
     {
-        var document = await _collection.Find(item => item.Cpf == cpf).FirstOrDefaultAsync();
+        var document = await _collection.Find(item => item.TenantId == _tenantId && item.Cpf == cpf).FirstOrDefaultAsync();
         return document is null ? null : MapToDomain(document);
     }
 
@@ -62,7 +65,7 @@ public sealed class MongoPatientRepository : IPatientRepository
 /// </summary>
     public async Task<bool> ExistsByCpfAsync(string cpf)
     {
-        return await _collection.Find(item => item.Cpf == cpf).AnyAsync();
+        return await _collection.Find(item => item.TenantId == _tenantId && item.Cpf == cpf).AnyAsync();
     }
 
 /// <summary>
@@ -79,7 +82,7 @@ public sealed class MongoPatientRepository : IPatientRepository
     public async Task<Patient?> UpdateAsync(Patient patient)
     {
         var document = MapToDocument(patient);
-        var result = await _collection.ReplaceOneAsync(item => item.Id == patient.Id, document);
+        var result = await _collection.ReplaceOneAsync(item => item.TenantId == _tenantId && item.Id == patient.Id, document);
         return result.MatchedCount == 0 ? null : patient;
     }
 
@@ -89,12 +92,13 @@ public sealed class MongoPatientRepository : IPatientRepository
         var update = Builders<PatientDocument>.Update
             .Push(item => item.ProfessionalNotes, noteDocument)
             .Set(item => item.UpdatedAt, note.CreatedAt);
-        var result = await _collection.UpdateOneAsync(item => item.Id == patientId, update);
+        var result = await _collection.UpdateOneAsync(item => item.TenantId == _tenantId && item.Id == patientId, update);
         return result.MatchedCount == 0 ? null : note;
     }
 
-    private static PatientDocument MapToDocument(Patient patient) => new()
+    private PatientDocument MapToDocument(Patient patient) => new()
     {
+        TenantId = _tenantId,
         Id = patient.Id,
         FullName = patient.FullName,
         BirthDate = patient.BirthDate,
